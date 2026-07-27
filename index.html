@@ -984,9 +984,16 @@ let activeDay = 0;
 // Yeni sürüm anahtarı: Tüm kullanıcıların eski boş planlarını sıfırlamak için
 const STORAGE_KEY = 'itinerarium-world-v2';
 
+function toDateStr(d){
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+
 function defaultStart(){
   const d = new Date(); d.setDate(d.getDate()+21);
-  return d.toISOString().slice(0,10);
+  return toDateStr(d);
 }
 
 function buildDays(startStr, count, preserve){
@@ -995,7 +1002,7 @@ function buildDays(startStr, count, preserve){
   for(let i=0;i<count;i++){
     const d = new Date(start); d.setDate(d.getDate()+i);
     const old = preserve && preserve[i] ? preserve[i].activities : [];
-    newDays.push({ date:d.toISOString().slice(0,10), activities: old });
+    newDays.push({ date:toDateStr(d), activities: old });
   }
   return newDays;
 }
