@@ -23,60 +23,87 @@ A modern travel planning application for **Web** and **Android**, designed to he
 
 # 📖 About
 
-**Itinerarium** is a travel planning application that helps users organize trips quickly and efficiently.
+**Itinerarium** is a modern travel planning application that enables travelers to organize every aspect of their journeys in one place.
 
-The application enables users to generate day-by-day itineraries, explore destinations on an interactive map, manage previous travel plans, and access useful travel tools such as weather forecasts and currency conversion.
+The application allows users to create day-by-day itineraries, manage activities, explore destinations through interactive maps, check weather forecasts, convert currencies, and keep previous travel plans organized.
 
-Built with modern web technologies and powered by **Capacitor**, Itinerarium is available as both a responsive web application and a native Android application.
+Built with modern web technologies and powered by **Capacitor**, Itinerarium runs as both a responsive web application and a native Android application from the same codebase.
 
 ---
 
 # ✨ Features
 
-### 🗓 Smart Trip Planner
+## 🗓 Smart Trip Planner
 
 - Create personalized travel itineraries
 - Automatic day-by-day schedule generation
 - Organize activities for every travel day
+- Edit and manage travel plans easily
 
-### 🗺 Interactive Maps
+---
 
-- Explore destinations with interactive maps
-- Locate attractions visually
-- Better trip planning experience
+## 🗺 Interactive Maps
 
-### 🛠 Travel Tools
+- Explore destinations using Leaflet maps
+- Visualize attractions and routes
+- Responsive map interface
+
+---
+
+## 🛠 Travel Tools
 
 - Weather forecast
 - Currency converter
-- Travel document organizer
+- Travel utilities
+- Trip document management
 
-### 📚 Travel Management
+---
 
-- View previous travel plans
-- Manage trip history
-- Easy itinerary organization
+## 📚 Travel Management
 
-### 📱 Cross Platform
+- Save previous itineraries
+- Organize trip history
+- Access travel plans anytime
+
+---
+
+## 📱 Cross Platform
 
 - Responsive Web Application
-- Native Android Application using Capacitor
+- Native Android Application
+- Shared codebase with Capacitor
 
-### 🎨 Modern User Interface
+---
 
-- Roman-inspired branding
-- Clean and responsive design
-- Mobile-first experience
-- Lightweight and fast
+## 🎨 Modern UI
+
+- Roman-inspired premium design
+- Elegant typography
+- Mobile-first interface
+- Dark luxury theme
+- Fast and lightweight
 
 ---
 
 # 📸 Application Preview
 
+
+## 🎬 Demo
+
+<p align="center">
+<img src="screenshots/demo.gif" width="900">
+</p>
+
+---
+
 ## 🏠 Home
 
 <p align="center">
-<img src="screenshots/home.jpeg" width="280">
+<img src="screenshots/home.jpeg" width="900">
+</p>
+
+<p align="center">
+Elegant landing page introducing the application and AI-powered trip planning.
 </p>
 
 ---
@@ -84,7 +111,11 @@ Built with modern web technologies and powered by **Capacitor**, Itinerarium is 
 ## 🗓 Trip Planner
 
 <p align="center">
-<img src="screenshots/plan.jpeg" width="280">
+<img src="screenshots/plan.jpeg" width="900">
+</p>
+
+<p align="center">
+Create personalized itineraries with an intuitive day-by-day planner.
 </p>
 
 ---
@@ -92,7 +123,11 @@ Built with modern web technologies and powered by **Capacitor**, Itinerarium is 
 ## 🛠 Travel Tools
 
 <p align="center">
-<img src="screenshots/tool.jpeg" width="280">
+<img src="screenshots/tool.jpeg" width="900">
+</p>
+
+<p align="center">
+Built-in weather forecast, currency converter and interactive maps.
 </p>
 
 ---
@@ -100,7 +135,11 @@ Built with modern web technologies and powered by **Capacitor**, Itinerarium is 
 ## 📚 Past Plans
 
 <p align="center">
-<img src="screenshots/pastplans.jpeg" width="280">
+<img src="screenshots/pastplans.jpeg" width="900">
+</p>
+
+<p align="center">
+Access and manage previously created travel plans.
 </p>
 
 ---
@@ -108,36 +147,40 @@ Built with modern web technologies and powered by **Capacitor**, Itinerarium is 
 ## 📖 Travelogue
 
 <p align="center">
-<img src="screenshots/travelogue.jpeg" width="280">
+<img src="screenshots/travelogue.jpeg" width="900">
+</p>
+
+<p align="center">
+Document memorable moments and keep your travel experiences organized.
 </p>
 
 ---
 
 # 🛠 Tech Stack
 
-### Frontend
+## Frontend
 
 - HTML5
 - CSS3
 - JavaScript (ES6)
 
-### Mobile
+## Mobile
 
 - Capacitor
 - Android Studio
 
-### Libraries
+## Libraries
 
 - Leaflet.js
 
-### Version Control
+## Version Control
 
 - Git
 - GitHub
 
 ---
 
-# 🚀 Installation
+# 🚀 Getting Started
 
 Clone the repository
 
@@ -145,7 +188,7 @@ Clone the repository
 git clone https://github.com/lazypanic999/Itinerarium.git
 ```
 
-Move into the project directory
+Navigate into the project
 
 ```bash
 cd Itinerarium
@@ -163,7 +206,7 @@ Sync Capacitor
 npx cap sync
 ```
 
-Open Android Studio
+Run Android Studio
 
 ```bash
 npx cap open android
@@ -179,7 +222,7 @@ Copy the latest web assets
 npx cap copy android
 ```
 
-Generate a Debug APK
+Build Debug APK
 
 ```bash
 cd android
@@ -187,7 +230,7 @@ cd android
 ./gradlew assembleDebug
 ```
 
-APK output:
+APK output
 
 ```text
 android/app/build/outputs/apk/debug/app-debug.apk
@@ -195,24 +238,23 @@ android/app/build/outputs/apk/debug/app-debug.apk
 
 ---
 
-# 💡 Development Objectives
+# 💻 Project Highlights
 
-This project was developed to strengthen my skills in:
-
-- Frontend Development
-- Mobile Application Development
-- Responsive Web Design
-- UI/UX Design
-- Android Deployment with Capacitor
-- Git & GitHub
-
-Itinerarium demonstrates the development of a complete travel planning application with a focus on usability, responsive design, and cross-platform deployment.
+- Responsive Web Application
+- Native Android Application
+- Shared Web & Mobile Codebase
+- Interactive Maps
+- Weather Forecast Integration
+- Currency Converter
+- Travel Planner
+- Roman-inspired Premium UI
+- Modern Responsive Design
 
 ---
 
 # 👨‍💻 Author
 
-**Doğukan Sağlık**
+## Doğukan Sağlık
 
 Computer Engineering Student  
 Ostim Technical University
@@ -229,7 +271,7 @@ https://www.linkedin.com/in/do%C4%9Fukan-sa%C4%9Fl%C4%B1k-4515a5288/
 
 <div align="center">
 
-### ⭐ If you found this project interesting, consider giving it a Star!
+### ⭐ If you like this project, consider giving it a Star!
 
 Made with ❤️ by **Doğukan Sağlık**
 
