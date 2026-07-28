@@ -30,18 +30,80 @@
     --line:rgba(236,228,211,0.14);
     --radius:2px;
   }
+  :root[data-theme="light"]{
+    --bg:#f6f1e4;
+    --bg-alt:#ece4d0;
+    --paper:#fffdf6;
+    --paper-shadow:#d9cfb4;
+    --ink:#2a2119;
+    --marble:#2a2119;
+    --marble-dim:#6b5f4c;
+    --gold:#a9791d;
+    --gold-soft:#8f6417;
+    --rosso:#a04434;
+    --pino:#46583f;
+    --rosa:#a8564a;
+    --blu:#3f647a;
+    --line:rgba(42,33,25,0.14);
+  }
   *{box-sizing:border-box;}
   html,body{margin:0;padding:0;}
   body{
     background:
-      radial-gradient(ellipse at top left, #2a2419 0%, transparent 55%),
-      radial-gradient(ellipse at bottom right, #241f16 0%, transparent 60%),
+      radial-gradient(ellipse at top left, var(--bg-alt) 0%, transparent 55%),
+      radial-gradient(ellipse at bottom right, var(--bg-alt) 0%, transparent 60%),
       var(--bg);
     color:var(--marble);
     font-family:'Jost', sans-serif;
     min-height:100vh;
     -webkit-font-smoothing:antialiased;
-    transition:color 0.3s ease;
+    transition:background-color 0.45s ease, color 0.35s ease;
+    animation:pageIn 0.5s ease;
+  }
+  body, body *{
+    transition-property:background-color, border-color, color, box-shadow;
+    transition-duration:0.35s;
+    transition-timing-function:ease;
+  }
+  @keyframes pageIn{ from{opacity:0;} to{opacity:1;} }
+  @keyframes popIn{ from{opacity:0;transform:scale(0.94);} to{opacity:1;transform:scale(1);} }
+  @keyframes slideUp{ from{opacity:0;transform:translateY(10px);} to{opacity:1;transform:translateY(0);} }
+  @keyframes spinSlow{ from{transform:rotate(0deg);} to{transform:rotate(360deg);} }
+  @keyframes pulseGlow{ 0%,100%{opacity:1;} 50%{opacity:0.55;} }
+
+  /* ---------- TOP CONTROLS (theme + language) ---------- */
+  .top-controls{
+    display:flex;
+    gap:10px;
+    align-items:center;
+    justify-content:flex-end;
+    padding:14px 24px 0;
+    max-width:980px;
+    margin:0 auto;
+  }
+  .landing .top-controls{max-width:640px;justify-content:center;padding:0 0 18px;}
+  .switch-btn{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.06em;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:transparent;
+    border:1px solid var(--line);
+    color:var(--marble-dim);
+    padding:7px 12px;
+    border-radius:20px;
+    cursor:pointer;
+    transition:all 0.2s ease;
+  }
+  .switch-btn:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-1px);}
+  .switch-btn:active{transform:translateY(0) scale(0.96);}
+  .switch-btn .theme-ico{display:inline-flex;transition:transform 0.4s ease;}
+  .switch-btn:hover .theme-ico{transform:rotate(20deg);}
+  .lang-btn .lang-code{
+    display:inline-block;
+    transition:opacity 0.15s ease;
   }
   .wrap{max-width:980px;margin:0 auto;padding:0 24px 80px;}
 
@@ -192,10 +254,13 @@
   }
   .ticket::before{left:-8px;}
   .ticket::after{right:-8px;}
-  .ticket:hover{transform:translateY(-3px);box-shadow:0 7px 0 var(--paper-shadow);}
+  .ticket{animation:slideUp 0.35s ease backwards;}
+  .ticket:hover{transform:translateY(-3px) scale(1.02);box-shadow:0 7px 0 var(--paper-shadow);}
+  .ticket:active{transform:translateY(-1px) scale(0.98);}
   .ticket.active{
     background:var(--gold);
     box-shadow:0 4px 0 var(--gold-soft);
+    animation:popIn 0.25s ease;
   }
   .ticket .roman{
     font-family:'Cormorant Garamond',serif;
@@ -231,6 +296,14 @@
     animation:fadeIn 0.28s ease;
   }
   @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .item{animation:slideUp 0.3s ease backwards;}
+  .item:nth-child(1){animation-delay:0.02s;}
+  .item:nth-child(2){animation-delay:0.06s;}
+  .item:nth-child(3){animation-delay:0.10s;}
+  .item:nth-child(4){animation-delay:0.14s;}
+  .item:nth-child(5){animation-delay:0.18s;}
+  .item:nth-child(n+6){animation-delay:0.2s;}
+  .item:hover{transform:translateX(2px);border-color:var(--gold);}
 
   .day-head{
     display:flex;
@@ -523,6 +596,7 @@
     font-size:11px;
     color:var(--gold);
     margin-bottom:22px;
+    animation:slideUp 0.5s ease backwards;
   }
   .landing-title{
     font-family:'Cormorant Garamond',serif;
@@ -532,6 +606,7 @@
     line-height:1.08;
     margin:0 0 20px;
     color:var(--marble);
+    animation:slideUp 0.5s ease 0.08s backwards;
   }
   .landing-sub{
     font-size:15px;
@@ -539,14 +614,16 @@
     line-height:1.7;
     max-width:460px;
     margin:0 auto 32px;
+    animation:slideUp 0.5s ease 0.16s backwards;
   }
-  .landing-cta{font-size:14px;padding:14px 30px;}
+  .landing-cta{font-size:14px;padding:14px 30px;animation:slideUp 0.5s ease 0.22s backwards;}
   .landing-features{
     display:grid;
     grid-template-columns:1fr 1fr;
     gap:14px;
     margin-top:48px;
     text-align:left;
+    animation:slideUp 0.5s ease 0.3s backwards;
   }
   .lf-item{
     display:flex;
@@ -558,7 +635,9 @@
     border:1px solid var(--line);
     border-radius:var(--radius);
     padding:12px 14px;
+    transition:transform 0.2s ease, border-color 0.2s ease;
   }
+  .lf-item:hover{transform:translateY(-2px);border-color:var(--gold);}
   .lf-ico{font-size:18px;flex:0 0 auto;}
   @media (max-width:520px){.landing-features{grid-template-columns:1fr;}}
 
@@ -594,7 +673,9 @@
     width:100%;
     max-height:88vh;
     overflow-y:auto;
+    animation:popIn 0.25s ease;
   }
+  .lightbox.open img{animation:popIn 0.25s ease;}
   .modal h3{
     font-family:'Cormorant Garamond',serif;
     font-style:italic;
@@ -640,7 +721,88 @@
   .subnav button:hover{border-color:var(--gold);color:var(--gold);}
   .subnav button.active{background:var(--gold);border-color:var(--gold);color:var(--bg);}
   .tab-pane{display:none;}
-  .tab-pane.active{display:block;}
+  .tab-pane.active{display:block;animation:fadeIn 0.3s ease;}
+
+  /* ---------- ARCHIVE (past plans) ---------- */
+  .archive-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+    gap:14px;
+  }
+  .archive-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px;
+    position:relative;
+    animation:slideUp 0.3s ease backwards;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .archive-card:hover{transform:translateY(-3px);box-shadow:0 6px 0 var(--paper-shadow);}
+  .archive-card .ac-eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:6px;
+  }
+  .archive-card h4{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:22px;
+    margin:0 0 6px;
+    color:var(--ink);
+  }
+  .archive-card .ac-meta{font-size:12px;color:var(--marble-dim);line-height:1.6;margin-bottom:14px;}
+  .archive-card .ac-actions{display:flex;gap:8px;}
+  .archive-card.current{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold) inset;}
+  .archive-card .ac-badge{
+    position:absolute;top:14px;right:14px;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:9px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--gold);
+  }
+
+  /* ---------- SEYAHATNAME (travel journal, letterboxd-style) ---------- */
+  .journal-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:10px;}
+  .journal-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+    gap:16px;
+  }
+  .journal-card{
+    cursor:pointer;
+    animation:popIn 0.3s ease backwards;
+    transition:transform 0.2s ease;
+  }
+  .journal-card:hover{transform:translateY(-4px) scale(1.02);}
+  .journal-poster{
+    width:100%;
+    aspect-ratio:2/3;
+    object-fit:cover;
+    border-radius:var(--radius);
+    border:1px solid var(--line);
+    background:var(--bg-alt);
+    box-shadow:0 5px 0 var(--paper-shadow);
+  }
+  .journal-poster.no-photo{
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;
+    color:var(--marble-dim);text-align:center;padding:10px;
+  }
+  .journal-card .jc-title{font-size:13px;margin-top:8px;color:var(--marble);font-weight:600;}
+  .journal-card .jc-meta{font-size:11px;color:var(--marble-dim);margin-top:2px;}
+  .journal-stars{color:var(--gold);font-size:12px;letter-spacing:2px;}
+  .star-picker{display:flex;gap:6px;font-size:22px;cursor:pointer;color:var(--line);margin-bottom:14px;}
+  .star-picker span{transition:color 0.15s ease, transform 0.15s ease;}
+  .star-picker span:hover{transform:scale(1.15);}
+  .star-picker span.filled{color:var(--gold);}
+  .journal-detail{max-width:480px;}
+  .journal-detail img{width:100%;border-radius:var(--radius);margin-bottom:16px;box-shadow:0 6px 0 var(--paper-shadow);}
+  .journal-detail .jd-place{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:26px;margin:0 0 4px;color:var(--ink);}
+  .journal-detail .jd-meta{font-size:12px;color:var(--marble-dim);margin-bottom:10px;}
+  .journal-detail .jd-review{font-size:14px;line-height:1.7;color:var(--marble);white-space:pre-wrap;margin-bottom:16px;}
 
   /* ---------- DOCS (flights & reservations) ---------- */
   .doc-list{margin-bottom:16px;}
@@ -708,45 +870,53 @@
 
 <div id="landingScreen" class="landing">
   <div class="landing-inner">
-    <div class="landing-eyebrow">ITINERARIUM AI</div>
-    <h1 class="landing-title">Dünyanın en estetik<br>yapay zekâ destekli<br>gezi planlayıcısı</h1>
-    <p class="landing-sub">Nereye gittiğini söyle, gerisini bırak. AI saat saat rotanı hazırlasın; uçuşların, rezervasyonların, bütçen ve anıların tek bir yerde toplansın.</p>
+    <div class="top-controls">
+      <button class="switch-btn" id="themeToggleLanding" title="Tema"><span class="theme-ico" id="themeIcoLanding">🌙</span><span id="themeLabelLanding">Koyu</span></button>
+      <button class="switch-btn lang-btn" id="langToggleLanding" title="Language"><span>🌐</span><span class="lang-code" id="langLabelLanding">TR</span></button>
+    </div>
+    <div class="landing-eyebrow">ITINERARIUM</div>
+    <h1 class="landing-title" id="landingTitle">Gezini planlamanın<br>basit ve keyifli<br>bir yolu</h1>
+    <p class="landing-sub" id="landingSub">Şehrini seç, günlerini oluştur. İstersen AI'dan bir başlangıç noktası iste; uçuşların, rezervasyonların ve notların hep aynı yerde dursun.</p>
     <button class="btn primary landing-cta" id="enterAppBtn">Planlamaya Başla →</button>
     <div class="landing-features">
-      <div class="lf-item"><span class="lf-ico">🤖</span><span>AI ile saniyeler içinde tam rota</span></div>
-      <div class="lf-item"><span class="lf-ico">✈️</span><span>Uçuş ve rezervasyonlarını sakla</span></div>
-      <div class="lf-item"><span class="lf-ico">📄</span><span>Şık bir seyahat kitabı gibi PDF</span></div>
-      <div class="lf-item"><span class="lf-ico">🌦️</span><span>Hava durumu, döviz kuru, harita</span></div>
+      <div class="lf-item"><span class="lf-ico">🤖</span><span id="lf1">AI ile saniyeler içinde tam rota</span></div>
+      <div class="lf-item"><span class="lf-ico">✈️</span><span id="lf2">Uçuş ve rezervasyonlarını sakla</span></div>
+      <div class="lf-item"><span class="lf-ico">📄</span><span id="lf3">Şık bir seyahat kitabı gibi PDF</span></div>
+      <div class="lf-item"><span class="lf-ico">🌦️</span><span id="lf4">Hava durumu, döviz kuru, harita</span></div>
     </div>
   </div>
 </div>
 
 <div id="plannerScreen" style="display:none;">
+<div class="top-controls">
+  <button class="switch-btn" id="themeToggle" title="Tema"><span class="theme-ico" id="themeIco">🌙</span><span id="themeLabel">Koyu</span></button>
+  <button class="switch-btn lang-btn" id="langToggle" title="Language"><span>🌐</span><span class="lang-code" id="langLabel">TR</span></button>
+</div>
 <div class="wrap">
   <a class="home-link" id="homeLink">← Ana Sayfa</a>
   <div class="hero">
     <div class="eyebrow" id="eyebrow">ITINERARIUM · ROMA</div>
     <h1 id="cityTitle">Roma</h1>
     <div class="hero-svg-wrap" id="heroSvgWrap"></div>
-    <p class="sub">Sizin için kurgulanan, saat saat ilerleyen bir yol arkadaşı. Her gün bir bilet, her bilet bir hatıra.</p>
+    <p class="sub" id="heroSub">Sizin için kurgulanan, saat saat ilerleyen bir yol arkadaşı. Her gün bir bilet, her bilet bir hatıra.</p>
     <input class="title-edit" id="tripSubtitle" type="text" value="" />
   </div>
 
   <div class="setup">
     <div class="field">
-      <label for="countrySelect">Ülke</label>
+      <label for="countrySelect" id="lbl-country">Ülke</label>
       <select id="countrySelect"></select>
     </div>
     <div class="field">
-      <label for="citySelect">Şehir</label>
+      <label for="citySelect" id="lbl-city">Şehir</label>
       <select id="citySelect"></select>
     </div>
     <div class="field">
-      <label for="startDate">Başlangıç Tarihi</label>
+      <label for="startDate" id="lbl-start">Başlangıç Tarihi</label>
       <input type="date" id="startDate">
     </div>
     <div class="field">
-      <label for="dayCount">Gün Sayısı</label>
+      <label for="dayCount" id="lbl-daycount">Gün Sayısı</label>
       <input type="number" id="dayCount" min="1" max="14" value="5">
     </div>
     <button class="btn primary" id="buildBtn">Planı Oluştur / Güncelle</button>
@@ -754,9 +924,11 @@
   </div>
 
   <div class="subnav">
-    <button class="active" data-tab="plan">🗓 Plan</button>
-    <button data-tab="docs">📋 Belgeler</button>
-    <button data-tab="tools">🧰 Araçlar</button>
+    <button class="active" data-tab="plan" id="tabBtn-plan">🗓 Plan</button>
+    <button data-tab="docs" id="tabBtn-docs">📋 Belgeler</button>
+    <button data-tab="tools" id="tabBtn-tools">🧰 Araçlar</button>
+    <button data-tab="archive" id="tabBtn-archive">🗂 Geçmiş Planlar</button>
+    <button data-tab="journal" id="tabBtn-journal">📖 Seyahatname</button>
   </div>
 
   <div class="tab-pane active" id="tab-plan">
@@ -767,17 +939,17 @@
 
   <div class="tab-pane" id="tab-docs">
   <div class="day-panel">
-    <div class="day-head"><h2>Uçuşlar</h2></div>
+    <div class="day-head"><h2 id="hdr-flights">Uçuşlar</h2></div>
     <div class="doc-list" id="flightsList"></div>
     <button class="add-toggle" id="flightAddToggle">+ Uçuş ekle</button>
     <div class="add-form" id="flightAddForm">
       <div class="add-grid2">
-        <div class="field"><label>Havayolu</label><input type="text" id="fl-airline" placeholder="ör. Turkish Airlines"></div>
-        <div class="field"><label>Uçuş No</label><input type="text" id="fl-no" placeholder="ör. TK1874"></div>
+        <div class="field"><label id="lbl-fl-airline">Havayolu</label><input type="text" id="fl-airline" placeholder="ör. Turkish Airlines"></div>
+        <div class="field"><label id="lbl-fl-no">Uçuş No</label><input type="text" id="fl-no" placeholder="ör. TK1874"></div>
       </div>
       <div class="add-grid2">
-        <div class="field"><label>Tarih</label><input type="date" id="fl-date"></div>
-        <div class="field"><label>Kalkış / Varış Saati</label>
+        <div class="field"><label id="lbl-fl-date">Tarih</label><input type="date" id="fl-date"></div>
+        <div class="field"><label id="lbl-fl-deparr">Kalkış / Varış Saati</label>
           <div style="display:flex;gap:8px;">
             <input type="time" id="fl-dep">
             <input type="time" id="fl-arr">
@@ -785,14 +957,14 @@
         </div>
       </div>
       <div class="add-grid2">
-        <div class="field"><label>Nereden (Havalimanı)</label><input type="text" id="fl-from" placeholder="ör. IST"></div>
-        <div class="field"><label>Nereye (Havalimanı)</label><input type="text" id="fl-to" placeholder="ör. FCO"></div>
+        <div class="field"><label id="lbl-fl-from">Nereden (Havalimanı)</label><input type="text" id="fl-from" placeholder="ör. IST"></div>
+        <div class="field"><label id="lbl-fl-to">Nereye (Havalimanı)</label><input type="text" id="fl-to" placeholder="ör. FCO"></div>
       </div>
       <div class="add-grid2">
-        <div class="field"><label>Terminal / Kapı</label><input type="text" id="fl-gate" placeholder="ör. T3 / Kapı 12"></div>
-        <div class="field"><label>Bagaj Hakkı</label><input type="text" id="fl-baggage" placeholder="ör. 23kg"></div>
+        <div class="field"><label id="lbl-fl-gate">Terminal / Kapı</label><input type="text" id="fl-gate" placeholder="ör. T3 / Kapı 12"></div>
+        <div class="field"><label id="lbl-fl-baggage">Bagaj Hakkı</label><input type="text" id="fl-baggage" placeholder="ör. 23kg"></div>
       </div>
-      <div class="field"><label>Rezervasyon Kodu</label><input type="text" id="fl-conf" placeholder="ör. AB12CD"></div>
+      <div class="field"><label id="lbl-fl-conf">Rezervasyon Kodu</label><input type="text" id="fl-conf" placeholder="ör. AB12CD"></div>
       <div class="form-actions">
         <button class="btn ghost small" id="flightCancel">Vazgeç</button>
         <button class="btn primary small" id="flightConfirm">Ekle</button>
@@ -801,12 +973,12 @@
 
     <hr class="section-divider">
 
-    <div class="day-head"><h2>Rezervasyonlar</h2></div>
+    <div class="day-head"><h2 id="hdr-res">Rezervasyonlar</h2></div>
     <div class="doc-list" id="reservationsList"></div>
     <button class="add-toggle" id="resAddToggle">+ Rezervasyon ekle</button>
     <div class="add-form" id="resAddForm">
       <div class="add-grid2">
-        <div class="field"><label>Tür</label>
+        <div class="field"><label id="lbl-res-type">Tür</label>
           <select id="res-type">
             <option value="Hotel">Otel</option>
             <option value="Airbnb">Airbnb</option>
@@ -816,14 +988,14 @@
             <option value="Museum">Müze Bileti</option>
           </select>
         </div>
-        <div class="field"><label>İsim</label><input type="text" id="res-name" placeholder="ör. Hotel Artemide"></div>
+        <div class="field"><label id="lbl-res-name">İsim</label><input type="text" id="res-name" placeholder="ör. Hotel Artemide"></div>
       </div>
       <div class="add-grid2">
-        <div class="field"><label>Tarih</label><input type="date" id="res-date"></div>
-        <div class="field"><label>Rezervasyon Kodu</label><input type="text" id="res-conf" placeholder="ör. 987654"></div>
+        <div class="field"><label id="lbl-res-date">Tarih</label><input type="date" id="res-date"></div>
+        <div class="field"><label id="lbl-res-conf">Rezervasyon Kodu</label><input type="text" id="res-conf" placeholder="ör. 987654"></div>
       </div>
-      <div class="field"><label>Link</label><input type="text" id="res-link" placeholder="ör. https://..."></div>
-      <div class="field"><label>Not</label><input type="text" id="res-note" placeholder="küçük bir hatırlatma..."></div>
+      <div class="field"><label id="lbl-res-link">Link</label><input type="text" id="res-link" placeholder="ör. https://..."></div>
+      <div class="field"><label id="lbl-res-note">Not</label><input type="text" id="res-note" placeholder="küçük bir hatırlatma..."></div>
       <div class="form-actions">
         <button class="btn ghost small" id="resCancel">Vazgeç</button>
         <button class="btn primary small" id="resConfirm">Ekle</button>
@@ -831,7 +1003,7 @@
     </div>
 
     <hr class="section-divider">
-    <div class="day-head"><h2>Notlar</h2></div>
+    <div class="day-head"><h2 id="hdr-notes">Notlar</h2></div>
     <textarea class="notes-area" id="tripNotes" placeholder="Gezi ile ilgili aklında kalsın istediğin her şey..."></textarea>
   </div>
   </div>
@@ -839,36 +1011,83 @@
   <div class="tab-pane" id="tab-tools">
   <div class="day-panel">
     <div class="tool-block">
-      <h3>Döviz Çevirici</h3>
+      <h3 id="hdr-currency">Döviz Çevirici</h3>
       <div class="currency-row">
-        <div class="field"><label>Miktar</label><input type="number" id="cur-amount" value="100"></div>
-        <div class="field"><label>Kimden</label>
+        <div class="field"><label id="lbl-amount">Miktar</label><input type="number" id="cur-amount" value="100"></div>
+        <div class="field"><label id="lbl-curfrom">Kimden</label>
           <select id="cur-from"><option>EUR</option><option>USD</option><option selected>TRY</option><option>GBP</option><option>JPY</option></select>
         </div>
-        <div class="field"><label>Kime</label>
+        <div class="field"><label id="lbl-curto">Kime</label>
           <select id="cur-to"><option selected>EUR</option><option>USD</option><option>TRY</option><option>GBP</option><option>JPY</option></select>
         </div>
         <button class="btn primary small" id="curConvertBtn">Çevir</button>
       </div>
       <div class="currency-result" id="curResult"></div>
-      <div class="tool-note">Frankfurter.app üzerinden anlık kur — Avrupa Merkez Bankası referans verisi.</div>
+      <div class="tool-note" id="currencyNote">Frankfurter.app üzerinden anlık kur — Avrupa Merkez Bankası referans verisi.</div>
     </div>
 
     <div class="tool-block">
-      <h3>Hava Durumu</h3>
-      <div class="weather-row" id="weatherRow"><p class="empty-note">Yükleniyor...</p></div>
+      <h3 id="hdr-weather">Hava Durumu</h3>
+      <div class="weather-row" id="weatherRow"><p class="empty-note" id="weatherLoading">Yükleniyor...</p></div>
       <div class="tool-note" id="weatherNote"></div>
     </div>
 
     <div class="tool-block">
-      <h3>Harita</h3>
+      <h3 id="hdr-map">Harita</h3>
       <div id="mapBox"></div>
-      <div class="tool-note">Şu an şehir merkezi gösteriliyor. Aktivite bazlı pinler ve rota optimizasyonu için bir sonraki adımda gerçek bir harita API anahtarı gerekecek.</div>
+      <div class="tool-note" id="mapNote">Şu an şehir merkezi gösteriliyor. Aktivite bazlı pinler ve rota optimizasyonu için bir sonraki adımda gerçek bir harita API anahtarı gerekecek.</div>
     </div>
   </div>
   </div>
 
+  <div class="tab-pane" id="tab-archive">
+  <div class="day-panel">
+    <div class="day-head"><h2 id="hdr-archive">Geçmiş Planlar</h2></div>
+    <div class="archive-grid" id="archiveGrid"></div>
+  </div>
+  </div>
+
+  <div class="tab-pane" id="tab-journal">
+  <div class="day-panel">
+    <div class="journal-toolbar">
+      <h2 id="hdr-journal" style="margin:0;">Seyahatname</h2>
+      <button class="btn primary small" id="journalAddToggle">+ Anı ekle</button>
+    </div>
+    <div class="add-form" id="journalAddForm">
+      <div class="field">
+        <label id="lbl-jphoto">Fotoğraf</label>
+        <div class="photo-upload">
+          <label class="pick" for="j-photo" id="lbl-jpick">Fotoğraf seç</label>
+          <input type="file" id="j-photo" accept="image/*">
+          <img class="thumb" id="j-photo-thumb">
+          <button class="btn ghost small" id="j-photo-clear" style="display:none;" data-i18n="removePhoto">Kaldır</button>
+        </div>
+      </div>
+      <div class="add-grid2">
+        <div class="field"><label id="lbl-jplace">Yer</label><input type="text" id="j-place" placeholder="ör. Trevi Çeşmesi"></div>
+        <div class="field"><label id="lbl-jdate">Tarih</label><input type="date" id="j-date"></div>
+      </div>
+      <div class="field">
+        <label id="lbl-jrating">Puan</label>
+        <div class="star-picker" id="jStarPicker">
+          <span data-star="1">★</span><span data-star="2">★</span><span data-star="3">★</span><span data-star="4">★</span><span data-star="5">★</span>
+        </div>
+      </div>
+      <div class="field"><label id="lbl-jreview">Yorum</label><textarea class="notes-area" id="j-review" style="min-height:90px;" placeholder="Bu yer hakkında ne düşünüyorsun?"></textarea></div>
+      <div class="form-actions">
+        <button class="btn ghost small" id="journalCancel">Vazgeç</button>
+        <button class="btn primary small" id="journalConfirm">Kaydet</button>
+      </div>
+    </div>
+    <div class="journal-grid" id="journalGrid"></div>
+  </div>
+  </div>
+
   <div class="lightbox" id="lightbox"><img id="lightboxImg" src="" alt=""></div>
+
+  <div class="modal-overlay" id="journalDetailOverlay">
+    <div class="modal journal-detail" id="journalDetailBody"></div>
+  </div>
 
   <div class="footer">
     <div class="stat" id="statLine">0 aktivite planlandı</div>
@@ -885,10 +1104,10 @@
 
 <div class="modal-overlay" id="aiModalOverlay">
   <div class="modal">
-    <h3>AI ile Gezi Planı</h3>
+    <h3 id="aiModalTitle">AI ile Gezi Planı</h3>
     <p class="modal-hint" id="aiModalHint">Şu an seçili şehir ve gün sayısı için bir plan oluşturulacak. Mevcut aktivitelerin üzerine yazılacak.</p>
-    <div class="field"><label>Günlük bütçe (yaklaşık, €)</label><input type="number" id="ai-budget" placeholder="ör. 120"></div>
-    <div class="field"><label>Seyahat tipi</label>
+    <div class="field"><label id="lbl-budget">Günlük bütçe (yaklaşık, €)</label><input type="number" id="ai-budget" placeholder="ör. 120"></div>
+    <div class="field"><label id="lbl-triptype">Seyahat tipi</label>
       <select id="ai-type">
         <option value="romantik çift">Romantik / çift</option>
         <option value="çocuklu aile">Çocuklu aile</option>
@@ -897,9 +1116,9 @@
         <option value="arkadaş grubu">Arkadaş grubu</option>
       </select>
     </div>
-    <div class="field"><label>İlgi alanları</label><input type="text" id="ai-interests" placeholder="ör. tarih, sanat, gece hayatı, doğa"></div>
-    <div class="field"><label>Yemek tercihi</label><input type="text" id="ai-food" placeholder="ör. vejetaryen, deniz mahsulü sever"></div>
-    <div class="field"><label>Günlük yürüme sınırı</label>
+    <div class="field"><label id="lbl-interests">İlgi alanları</label><input type="text" id="ai-interests" placeholder="ör. tarih, sanat, gece hayatı, doğa"></div>
+    <div class="field"><label id="lbl-food">Yemek tercihi</label><input type="text" id="ai-food" placeholder="ör. vejetaryen, deniz mahsulü sever"></div>
+    <div class="field"><label id="lbl-walk">Günlük yürüme sınırı</label>
       <select id="ai-walk"><option value="düşük">Düşük</option><option value="orta" selected>Orta</option><option value="yüksek">Yüksek</option></select>
     </div>
     <div class="form-actions">
@@ -917,7 +1136,125 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
 <script>
-/* ---------------- ICONS ---------------- */
+/* ---------------- THEME & LANGUAGE ---------------- */
+let APP_LANG = localStorage.getItem('itinerarium-lang') || 'tr';
+let APP_THEME = localStorage.getItem('itinerarium-theme') || 'dark';
+
+const I18N = {
+  tr:{
+    themeDark:'Koyu', themeLight:'Açık', langCode:'TR',
+    landingTitle:'Gezini planlamanın<br>basit ve keyifli<br>bir yolu',
+    landingSub:'Şehrini seç, günlerini oluştur. İstersen AI\'dan bir başlangıç noktası iste; uçuşların, rezervasyonların ve notların hep aynı yerde dursun.',
+    landingCta:'Planlamaya Başla →',
+    lf1:'AI ile saniyeler içinde tam rota', lf2:'Uçuş ve rezervasyonlarını sakla',
+    lf3:'Şık bir seyahat kitabı gibi PDF', lf4:'Hava durumu, döviz kuru, harita',
+    homeLink:'← Ana Sayfa',
+    heroSub:'Sizin için kurgulanan, saat saat ilerleyen bir yol arkadaşı. Her gün bir bilet, her bilet bir hatıra.',
+    lblCountry:'Ülke', lblCity:'Şehir', lblStart:'Başlangıç Tarihi', lblDayCount:'Gün Sayısı',
+    buildBtn:'Planı Oluştur / Güncelle', aiPlanBtn:'✨ AI ile Oluştur',
+    tabPlan:'🗓 Plan', tabDocs:'📋 Belgeler', tabTools:'🧰 Araçlar', tabArchive:'🗂 Geçmiş Planlar', tabJournal:'📖 Seyahatname',
+    hdrArchive:'Geçmiş Planlar', noTrips:'Henüz kaydedilmiş bir plan yok. Bir şehir planla, otomatik olarak burada görünecek.',
+    currentTrip:'Şu an açık', openTrip:'Aç', deleteTrip:'Sil',
+    hdrJournal:'Seyahatname', addJournal:'+ Anı ekle', noJournal:'Henüz bir anı eklemedin. Gezdiğin bir yerin fotoğrafını ve yorumunu ekle.',
+    lblJPhoto:'Fotoğraf', lblJPlace:'Yer', lblJDate:'Tarih', lblJRating:'Puan', lblJReview:'Yorum',
+    ph_jplace:'ör. Trevi Çeşmesi', ph_jreview:'Bu yer hakkında ne düşünüyorsun?', journalSave:'Kaydet',
+    hdrFlights:'Uçuşlar', hdrRes:'Rezervasyonlar', hdrNotes:'Notlar',
+    addFlight:'+ Uçuş ekle', addRes:'+ Rezervasyon ekle',
+    lblAirline:'Havayolu', lblFlNo:'Uçuş No', lblFlDate:'Tarih', lblDepArr:'Kalkış / Varış Saati',
+    lblFrom:'Nereden (Havalimanı)', lblTo:'Nereye (Havalimanı)', lblGate:'Terminal / Kapı', lblBaggage:'Bagaj Hakkı', lblConf:'Rezervasyon Kodu',
+    lblResType:'Tür', lblResName:'İsim', lblResDate:'Tarih', lblResConf:'Rezervasyon Kodu', lblResLink:'Link', lblResNote:'Not',
+    resTypes:{Hotel:'Otel', Airbnb:'Airbnb', Booking:'Booking', Restaurant:'Restoran', Train:'Tren', Museum:'Müze Bileti'},
+    notesPlaceholder:'Gezi ile ilgili aklında kalsın istediğin her şey...',
+    cancel:'Vazgeç', add:'Ekle', save:'Kaydet',
+    hdrCurrency:'Döviz Çevirici', lblAmount:'Miktar', lblCurFrom:'Kimden', lblCurTo:'Kime', convert:'Çevir',
+    currencyNote:'Frankfurter.app üzerinden anlık kur — Avrupa Merkez Bankası referans verisi.',
+    calculating:'Hesaplanıyor...', rateError:'Kur alınamadı, bağlantını kontrol et.',
+    hdrWeather:'Hava Durumu', weatherLoading:'Yükleniyor...', weatherNotFound:'Konum bulunamadı.',
+    weatherNoData:'Bu tarihler için tahmin henüz yok (çok uzak bir tarih olabilir).',
+    weatherError:'Hava durumu alınamadı.', weatherNote:'Open-Meteo üzerinden ücretsiz tahmin verisi.',
+    hdrMap:'Harita', mapNote:'Şu an şehir merkezi gösteriliyor. Aktivite bazlı pinler ve rota optimizasyonu için bir sonraki adımda gerçek bir harita API anahtarı gerekecek.',
+    printBtn:'Yazdır', pdfBtn:'📄 Şık PDF', pdfPreparing:'Hazırlanıyor...', exportBtn:'Planı İndir (.json)', importBtn:'Planı Yükle',
+    statLine:(d,a)=>`${d} gün · ${a} aktivite planlandı`,
+    aiModalTitle:'AI ile Gezi Planı', lblBudget:'Günlük bütçe (yaklaşık, €)', lblTripType:'Seyahat tipi',
+    lblInterests:'İlgi alanları', lblFood:'Yemek tercihi', lblWalk:'Günlük yürüme sınırı',
+    aiGenerate:'Planı Oluştur',
+    aiHint:(city,n)=>`Şu an ${city} için ${n} günlük bir plan oluşturulacak. Mevcut aktivitelerin üzerine yazılacak.`,
+    aiPreparing:'AI rota hazırlıyor...', aiReady:'Plan hazır! Aktiviteler güncellendi.',
+    aiError:(m)=>`Bir şeyler ters gitti, tekrar dener misin? (${m})`,
+    newActivity:'Yeni Aktivite', editActivity:'Aktiviteyi Düzenle',
+    lblTime:'Saat', lblTitle:'Başlık', lblCategory:'Kategori', lblPlace:'Konum', lblNote:'Not', lblPhoto:'Fotoğraf',
+    pickPhoto:'Fotoğraf seç', removePhoto:'Kaldır',
+    addActivity:'+ Aktivite ekle', editTitle:'Düzenle', deleteTitle:'Sil',
+    emptyDay:'Bu gün için henüz bir şey planlanmadı.', emptyDayFirst:'Önce bir plan oluşturun.',
+    emptyFlights:'Henüz uçuş eklenmedi.', emptyRes:'Henüz rezervasyon eklenmedi.',
+    dayHead:(roman,date)=>`${roman}. Gün — ${date}`,
+    ph_placeAct:'ör. Pantheon ziyareti', ph_note:'küçük bir hatırlatma...',
+    importError:'Dosya okunamadı: geçerli bir plan dosyası seçtiğinizden emin olun.',
+    printEmpty:'Bu gün için planlanmış aktivite yok.', printTitleSuffix:'Planı',
+    pdfDayLabel:'Gün', pdfFlightsRes:'Uçuşlar & Rezervasyonlar', pdfFlights:'Uçuşlar', pdfReservations:'Rezervasyonlar',
+    pdfNotes:'Notlar', pdfEmptyDay:'Bu gün için planlanmış bir şey yok.', pdfFooter:'Itinerarium AI ile oluşturuldu',
+    pdfBagLabel:'Bagaj', pdfCodeLabel:'Kod', fileSuffixJson:'gezi-plani', fileSuffixPdf:'seyahat-plani',
+    delTitle:'Sil'
+  },
+  en:{
+    themeDark:'Dark', themeLight:'Light', langCode:'EN',
+    landingTitle:'A simple, enjoyable<br>way to plan<br>your trip',
+    landingSub:'Pick your city, build your days. Ask AI for a starting point if you want; keep flights, reservations, and notes all in one place.',
+    landingCta:'Start Planning →',
+    lf1:'A full route from AI in seconds', lf2:'Keep flights and reservations',
+    lf3:'A polished PDF travel book', lf4:'Weather, exchange rates, map',
+    homeLink:'← Home',
+    heroSub:'A companion built just for you, moving hour by hour. Every day a ticket, every ticket a memory.',
+    lblCountry:'Country', lblCity:'City', lblStart:'Start Date', lblDayCount:'Number of Days',
+    buildBtn:'Build / Update Plan', aiPlanBtn:'✨ Generate with AI',
+    tabPlan:'🗓 Plan', tabDocs:'📋 Documents', tabTools:'🧰 Tools', tabArchive:'🗂 Past Plans', tabJournal:'📖 Travelogue',
+    hdrArchive:'Past Plans', noTrips:'No saved plans yet. Plan a city and it will automatically appear here.',
+    currentTrip:'Currently open', openTrip:'Open', deleteTrip:'Delete',
+    hdrJournal:'Travelogue', addJournal:'+ Add memory', noJournal:'No memories added yet. Add a photo and review of a place you visited.',
+    lblJPhoto:'Photo', lblJPlace:'Place', lblJDate:'Date', lblJRating:'Rating', lblJReview:'Review',
+    ph_jplace:'e.g. Trevi Fountain', ph_jreview:'What did you think of this place?', journalSave:'Save',
+    hdrFlights:'Flights', hdrRes:'Reservations', hdrNotes:'Notes',
+    addFlight:'+ Add flight', addRes:'+ Add reservation',
+    lblAirline:'Airline', lblFlNo:'Flight No', lblFlDate:'Date', lblDepArr:'Departure / Arrival Time',
+    lblFrom:'From (Airport)', lblTo:'To (Airport)', lblGate:'Terminal / Gate', lblBaggage:'Baggage Allowance', lblConf:'Confirmation Code',
+    lblResType:'Type', lblResName:'Name', lblResDate:'Date', lblResConf:'Confirmation Code', lblResLink:'Link', lblResNote:'Note',
+    resTypes:{Hotel:'Hotel', Airbnb:'Airbnb', Booking:'Booking', Restaurant:'Restaurant', Train:'Train', Museum:'Museum Ticket'},
+    notesPlaceholder:'Anything about the trip you want to remember...',
+    cancel:'Cancel', add:'Add', save:'Save',
+    hdrCurrency:'Currency Converter', lblAmount:'Amount', lblCurFrom:'From', lblCurTo:'To', convert:'Convert',
+    currencyNote:'Live rates via Frankfurter.app — European Central Bank reference data.',
+    calculating:'Calculating...', rateError:'Could not fetch rate, check your connection.',
+    hdrWeather:'Weather', weatherLoading:'Loading...', weatherNotFound:'Location not found.',
+    weatherNoData:'No forecast yet for these dates (they may be too far ahead).',
+    weatherError:'Could not fetch weather.', weatherNote:'Free forecast data via Open-Meteo.',
+    hdrMap:'Map', mapNote:'Currently showing the city center. Activity-based pins and route optimization will need a real map API key in a future step.',
+    printBtn:'Print', pdfBtn:'📄 Elegant PDF', pdfPreparing:'Preparing...', exportBtn:'Download Plan (.json)', importBtn:'Load Plan',
+    statLine:(d,a)=>`${d} days · ${a} activities planned`,
+    aiModalTitle:'AI Trip Plan', lblBudget:'Daily budget (approx., €)', lblTripType:'Trip type',
+    lblInterests:'Interests', lblFood:'Food preference', lblWalk:'Daily walking limit',
+    aiGenerate:'Generate Plan',
+    aiHint:(city,n)=>`A ${n}-day plan for ${city} will be generated now. Existing activities will be overwritten.`,
+    aiPreparing:'AI is preparing your route...', aiReady:'Plan ready! Activities updated.',
+    aiError:(m)=>`Something went wrong, want to try again? (${m})`,
+    newActivity:'New Activity', editActivity:'Edit Activity',
+    lblTime:'Time', lblTitle:'Title', lblCategory:'Category', lblPlace:'Place', lblNote:'Note', lblPhoto:'Photo',
+    pickPhoto:'Choose photo', removePhoto:'Remove',
+    addActivity:'+ Add activity', editTitle:'Edit', deleteTitle:'Delete',
+    emptyDay:'Nothing planned for this day yet.', emptyDayFirst:'Build a plan first.',
+    emptyFlights:'No flights added yet.', emptyRes:'No reservations added yet.',
+    dayHead:(roman,date)=>`Day ${roman} — ${date}`,
+    ph_placeAct:'e.g. Pantheon visit', ph_note:'a little reminder...',
+    importError:'Could not read the file: make sure you selected a valid plan file.',
+    printEmpty:'No activities planned for this day.', printTitleSuffix:'Plan',
+    pdfDayLabel:'Day', pdfFlightsRes:'Flights & Reservations', pdfFlights:'Flights', pdfReservations:'Reservations',
+    pdfNotes:'Notes', pdfEmptyDay:'Nothing planned for this day.', pdfFooter:'Created with Itinerarium AI',
+    pdfBagLabel:'Baggage', pdfCodeLabel:'Code', fileSuffixJson:'trip-plan', fileSuffixPdf:'travel-plan',
+    delTitle:'Delete'
+  }
+};
+function t(key){ return I18N[APP_LANG][key]; }
+
+
 const ICONS = {
   muze: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 21h18M4 21V10M20 21V10M2 10l10-6 10 6M6 10v7M10 10v7M14 10v7M18 10v7"/></svg>',
   yemek: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2v8a2 2 0 002 2 2 2 0 002-2V2M8 12v10M16 2c-1.5 1.5-2 3-2 5s.5 3.5 2 5v9"/></svg>',
@@ -926,19 +1263,25 @@ const ICONS = {
   ulasim: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="12" rx="2"/><path d="M4 12h16M8 20l-1.5 2M16 20l1.5 2"/><circle cx="8" cy="16" r="0.5" fill="currentColor"/><circle cx="16" cy="16" r="0.5" fill="currentColor"/></svg>'
 };
 const CATS = {
-  muze:   {label:'Müze',           color:'var(--pino)'},
-  yemek:  {label:'Yemek',          color:'var(--rosa)'},
-  gezi:   {label:'Gezi / Yürüyüş', color:'var(--gold)'},
-  manzara:{label:'Manzara / Özel', color:'var(--rosso)'},
-  ulasim: {label:'Ulaşım',         color:'var(--blu)'}
+  muze:   {label:'Müze',           en:'Museum',        color:'var(--pino)'},
+  yemek:  {label:'Yemek',          en:'Food',          color:'var(--rosa)'},
+  gezi:   {label:'Gezi / Yürüyüş', en:'Sightseeing',   color:'var(--gold)'},
+  manzara:{label:'Manzara / Özel', en:'Viewpoint',     color:'var(--rosso)'},
+  ulasim: {label:'Ulaşım',         en:'Transport',     color:'var(--blu)'}
 };
+function catLabel(k){
+  const c = CATS[k] || CATS.gezi;
+  return APP_LANG === 'en' ? c.en : c.label;
+}
 const TR_DAYS = ['Pazar','Pazartesi','Salı','Çarşamba','Perşembe','Cuma','Cumartesi'];
 const TR_MONTHS = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+const EN_DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const EN_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function toRoman(n){
   const map=[[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];
   let res=''; for(const [v,s] of map){ while(n>=v){res+=s; n-=v;} } return res;
 }
-function fmtDate(d){ return `${d.getDate()} ${TR_MONTHS[d.getMonth()]}`; }
+function fmtDate(d){ const months = APP_LANG==='en' ? EN_MONTHS : TR_MONTHS; return `${d.getDate()} ${months[d.getMonth()]}`; }
 function uid(){ return Math.random().toString(36).slice(2,9); }
 
 /* ---------------- DESTINATIONS & TAM 5 GÜNLÜK PLANLAR ---------------- */
@@ -1468,11 +1811,123 @@ document.getElementById('citySelect').addEventListener('change', ()=>{
 });
 
 function init(){
+  applyTheme(APP_THEME);
+  applyI18n();
   populateCountrySelect();
   const store = loadStore();
   const startId = DESTINATIONS[store.selected] ? store.selected : 'roma';
   applyDestination(startId);
 }
+
+/* ---------------- THEME TOGGLE ---------------- */
+function applyTheme(theme){
+  APP_THEME = theme;
+  document.documentElement.setAttribute('data-theme', theme==='light' ? 'light' : '');
+  const isLight = theme==='light';
+  const ico = isLight ? '☀️' : '🌙';
+  const label = isLight ? t('themeLight') : t('themeDark');
+  ['themeIco','themeIcoLanding'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent = ico; });
+  ['themeLabel','themeLabelLanding'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent = label; });
+  localStorage.setItem('itinerarium-theme', theme);
+}
+function toggleTheme(){ applyTheme(APP_THEME==='light' ? 'dark' : 'light'); }
+document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+document.getElementById('themeToggleLanding').addEventListener('click', toggleTheme);
+
+/* ---------------- LANGUAGE TOGGLE ---------------- */
+function applyI18n(){
+  const T = I18N[APP_LANG];
+  document.documentElement.lang = APP_LANG;
+  ['langLabel','langLabelLanding'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent = T.langCode; });
+  applyTheme(APP_THEME); // refresh theme label text in current language
+
+  const setText = (id, val)=>{ const el=document.getElementById(id); if(el) el.textContent = val; };
+  const setHtml = (id, val)=>{ const el=document.getElementById(id); if(el) el.innerHTML = val; };
+  const setPh   = (id, val)=>{ const el=document.getElementById(id); if(el) el.placeholder = val; };
+
+  setHtml('landingTitle', T.landingTitle);
+  setText('landingSub', T.landingSub);
+  setText('enterAppBtn', T.landingCta);
+  setText('lf1', T.lf1); setText('lf2', T.lf2); setText('lf3', T.lf3); setText('lf4', T.lf4);
+  setText('homeLink', T.homeLink);
+  setText('heroSub', T.heroSub);
+  setText('lbl-country', T.lblCountry); setText('lbl-city', T.lblCity);
+  setText('lbl-start', T.lblStart); setText('lbl-daycount', T.lblDayCount);
+  setText('buildBtn', T.buildBtn); setText('aiPlanBtn', T.aiPlanBtn);
+  setText('tabBtn-plan', T.tabPlan); setText('tabBtn-docs', T.tabDocs); setText('tabBtn-tools', T.tabTools);
+  setText('tabBtn-archive', T.tabArchive); setText('tabBtn-journal', T.tabJournal);
+  setText('hdr-archive', T.hdrArchive);
+  setText('hdr-journal', T.hdrJournal); setText('journalAddToggle', T.addJournal);
+  setText('lbl-jphoto', T.lblJPhoto); setText('lbl-jpick', T.pickPhoto);
+  setText('lbl-jplace', T.lblJPlace); setText('lbl-jdate', T.lblJDate);
+  setText('lbl-jrating', T.lblJRating); setText('lbl-jreview', T.lblJReview);
+  setPh('j-place', T.ph_jplace); setPh('j-review', T.ph_jreview);
+  setText('journalCancel', T.cancel); setText('journalConfirm', T.journalSave);
+  const jClear = document.getElementById('j-photo-clear'); if(jClear) jClear.textContent = T.removePhoto;
+  if(document.getElementById('archiveGrid') && document.getElementById('tab-archive').classList.contains('active')) renderArchive();
+  if(document.getElementById('journalGrid') && document.getElementById('tab-journal').classList.contains('active')) renderJournal();
+  setText('hdr-flights', T.hdrFlights); setText('hdr-res', T.hdrRes); setText('hdr-notes', T.hdrNotes);
+  setText('flightAddToggle', T.addFlight); setText('resAddToggle', T.addRes);
+  setText('lbl-fl-airline', T.lblAirline); setText('lbl-fl-no', T.lblFlNo); setText('lbl-fl-date', T.lblFlDate);
+  setText('lbl-fl-deparr', T.lblDepArr); setText('lbl-fl-from', T.lblFrom); setText('lbl-fl-to', T.lblTo);
+  setText('lbl-fl-gate', T.lblGate); setText('lbl-fl-baggage', T.lblBaggage); setText('lbl-fl-conf', T.lblConf);
+  setText('flightCancel', T.cancel); setText('flightConfirm', T.add);
+  setText('lbl-res-type', T.lblResType); setText('lbl-res-name', T.lblResName); setText('lbl-res-date', T.lblResDate);
+  setText('lbl-res-conf', T.lblResConf); setText('lbl-res-link', T.lblResLink); setText('lbl-res-note', T.lblResNote);
+  setText('resCancel', T.cancel); setText('resConfirm', T.add);
+  const resTypeSel = document.getElementById('res-type');
+  if(resTypeSel){ Array.from(resTypeSel.options).forEach(opt=>{ opt.textContent = T.resTypes[opt.value] || opt.value; }); }
+  setPh('tripNotes', T.notesPlaceholder);
+  setText('hdr-currency', T.hdrCurrency); setText('lbl-amount', T.lblAmount);
+  setText('lbl-curfrom', T.lblCurFrom); setText('lbl-curto', T.lblCurTo);
+  setText('curConvertBtn', T.convert); setText('currencyNote', T.currencyNote);
+  setText('hdr-weather', T.hdrWeather); setText('weatherNote', ''); 
+  const wl = document.getElementById('weatherLoading'); if(wl) wl.textContent = T.weatherLoading;
+  setText('hdr-map', T.hdrMap); setText('mapNote', T.mapNote);
+  setText('printBtn', T.printBtn); setText('pdfBtn', T.pdfBtn);
+  setText('exportBtn', T.exportBtn); setText('importBtn', T.importBtn);
+  setText('aiModalTitle', T.aiModalTitle); setText('lbl-budget', T.lblBudget); setText('lbl-triptype', T.lblTripType);
+  setText('lbl-interests', T.lblInterests); setText('lbl-food', T.lblFood); setText('lbl-walk', T.lblWalk);
+  setText('aiCancelBtn', T.cancel); setText('aiGenerateBtn', T.aiGenerate);
+  setPh('fl-airline', APP_LANG==='en' ? 'e.g. Turkish Airlines' : 'ör. Turkish Airlines');
+  setPh('fl-no', APP_LANG==='en' ? 'e.g. TK1874' : 'ör. TK1874');
+  setPh('fl-from', APP_LANG==='en' ? 'e.g. IST' : 'ör. IST');
+  setPh('fl-to', APP_LANG==='en' ? 'e.g. FCO' : 'ör. FCO');
+  setPh('fl-gate', APP_LANG==='en' ? 'e.g. T3 / Gate 12' : 'ör. T3 / Kapı 12');
+  setPh('fl-baggage', APP_LANG==='en' ? 'e.g. 23kg' : 'ör. 23kg');
+  setPh('fl-conf', 'ör. AB12CD'.replace('ör.', APP_LANG==='en' ? 'e.g.' : 'ör.'));
+  setPh('res-name', APP_LANG==='en' ? 'e.g. Hotel Artemide' : 'ör. Hotel Artemide');
+  setPh('res-conf', APP_LANG==='en' ? 'e.g. 987654' : 'ör. 987654');
+  setPh('res-link', APP_LANG==='en' ? 'e.g. https://...' : 'ör. https://...');
+  setPh('ai-budget', APP_LANG==='en' ? 'e.g. 120' : 'ör. 120');
+  setPh('ai-interests', APP_LANG==='en' ? 'e.g. history, art, nightlife, nature' : 'ör. tarih, sanat, gece hayatı, doğa');
+  setPh('ai-food', APP_LANG==='en' ? 'e.g. vegetarian, loves seafood' : 'ör. vejetaryen, deniz mahsulü sever');
+  setPh('f-note', t('ph_note')); setPh('res-note', t('ph_note'));
+  const tripTypeSel = document.getElementById('ai-type');
+  if(tripTypeSel){
+    const tripTypeLabels = APP_LANG==='en'
+      ? {'romantik çift':'Romantic / couple','çocuklu aile':'Family with kids','solo traveller':'Solo traveller','backpacker':'Backpacker','arkadaş grubu':'Group of friends'}
+      : {'romantik çift':'Romantik / çift','çocuklu aile':'Çocuklu aile','solo traveller':'Solo traveller','backpacker':'Backpacker','arkadaş grubu':'Arkadaş grubu'};
+    Array.from(tripTypeSel.options).forEach(opt=>{ opt.textContent = tripTypeLabels[opt.value] || opt.value; });
+  }
+  const walkSel = document.getElementById('ai-walk');
+  if(walkSel){
+    const walkLabels = APP_LANG==='en' ? {'düşük':'Low','orta':'Medium','yüksek':'High'} : {'düşük':'Düşük','orta':'Orta','yüksek':'Yüksek'};
+    Array.from(walkSel.options).forEach(opt=>{ opt.textContent = walkLabels[opt.value] || opt.value; });
+  }
+
+  if(document.getElementById('addFormHead')) renderDayPanel();
+  renderStats();
+  renderFlights();
+  renderReservations();
+}
+function toggleLang(){
+  APP_LANG = APP_LANG==='tr' ? 'en' : 'tr';
+  localStorage.setItem('itinerarium-lang', APP_LANG);
+  applyI18n();
+}
+document.getElementById('langToggle').addEventListener('click', toggleLang);
+document.getElementById('langToggleLanding').addEventListener('click', toggleLang);
 
 /* ---------------- RENDER ---------------- */
 function renderAll(){
@@ -1504,13 +1959,13 @@ function renderDaysRow(){
 function renderDayPanel(){
   const panel = document.getElementById('dayPanel');
   const day = state.days[activeDay];
-  if(!day){ panel.innerHTML = '<p class="empty-note">Önce bir plan oluşturun.</p>'; return; }
+  if(!day){ panel.innerHTML = `<p class="empty-note">${t('emptyDayFirst')}</p>`; return; }
   const d = new Date(day.date+'T00:00:00');
   const sorted = [...day.activities].sort((a,b)=> a.time.localeCompare(b.time));
 
   let itemsHtml = '';
   if(sorted.length===0){
-    itemsHtml = '<p class="empty-note">Bu gün için henüz bir şey planlanmadı.</p>';
+    itemsHtml = `<p class="empty-note">${t('emptyDay')}</p>`;
   } else {
     itemsHtml = sorted.map(a=>{
       const cat = CATS[a.cat] || CATS.gezi;
@@ -1520,17 +1975,17 @@ function renderDayPanel(){
         <div class="body">
           <h3>${escapeHtml(a.title)}</h3>
           <div class="meta">
-            <span class="tag">${ICONS[a.cat]||''} ${cat.label}</span>
+            <span class="tag">${ICONS[a.cat]||''} ${catLabel(a.cat)}</span>
             ${a.place ? `<span>· ${escapeHtml(a.place)}</span>` : ''}
           </div>
           ${a.note ? `<div class="note">${escapeHtml(a.note)}</div>` : ''}
           ${a.photo ? `<div class="photo" data-photo="${a.photo}"><img src="${a.photo}" alt="${escapeHtml(a.title)}"></div>` : ''}
         </div>
         <div class="actions">
-          <button class="icon-btn edit" title="Düzenle" data-edit="${a.id}">
+          <button class="icon-btn edit" title="${t('editTitle')}" data-edit="${a.id}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
           </button>
-          <button class="icon-btn del" title="Sil" data-del="${a.id}">
+          <button class="icon-btn del" title="${t('delTitle')}" data-del="${a.id}">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
           </button>
         </div>
@@ -1538,40 +1993,41 @@ function renderDayPanel(){
     }).join('');
   }
 
+  const weekdays = APP_LANG==='en' ? EN_DAYS : TR_DAYS;
   panel.innerHTML = `
     <div class="day-head">
-      <h2>${toRoman(activeDay+1)}. Gün — ${fmtDate(d)}</h2>
-      <span class="weekday">${TR_DAYS[d.getDay()]}</span>
+      <h2>${t('dayHead')(toRoman(activeDay+1), fmtDate(d))}</h2>
+      <span class="weekday">${weekdays[d.getDay()]}</span>
     </div>
     <div class="timeline">${itemsHtml}</div>
-    <button class="add-toggle" id="addToggle">+ Aktivite ekle</button>
+    <button class="add-toggle" id="addToggle">${t('addActivity')}</button>
     <div class="add-form" id="addForm">
-      <div class="add-form-head" id="addFormHead" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">Yeni Aktivite</div>
+      <div class="add-form-head" id="addFormHead" style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;">${t('newActivity')}</div>
       <div class="add-grid">
-        <div class="field"><label>Saat</label><input type="time" id="f-time" value="10:00"></div>
-        <div class="field"><label>Başlık</label><input type="text" id="f-title" placeholder="ör. Pantheon ziyareti"></div>
-        <div class="field"><label>Kategori</label>
+        <div class="field"><label>${t('lblTime')}</label><input type="time" id="f-time" value="10:00"></div>
+        <div class="field"><label>${t('lblTitle')}</label><input type="text" id="f-title" placeholder="${t('ph_placeAct')}"></div>
+        <div class="field"><label>${t('lblCategory')}</label>
           <select id="f-cat">
-            ${Object.entries(CATS).map(([k,v])=>`<option value="${k}">${v.label}</option>`).join('')}
+            ${Object.entries(CATS).map(([k,v])=>`<option value="${k}">${catLabel(k)}</option>`).join('')}
           </select>
         </div>
       </div>
       <div class="add-grid2">
-        <div class="field"><label>Konum</label><input type="text" id="f-place" placeholder="ör. Piazza della Rotonda"></div>
-        <div class="field"><label>Not</label><input type="text" id="f-note" placeholder="küçük bir hatırlatma..."></div>
+        <div class="field"><label>${t('lblPlace')}</label><input type="text" id="f-place" placeholder="ör. Piazza della Rotonda"></div>
+        <div class="field"><label>${t('lblNote')}</label><input type="text" id="f-note" placeholder="${t('ph_note')}"></div>
       </div>
       <div class="field" style="margin-bottom:14px;">
-        <label>Fotoğraf</label>
+        <label>${t('lblPhoto')}</label>
         <div class="photo-upload">
-          <label class="pick" for="f-photo">Fotoğraf seç</label>
+          <label class="pick" for="f-photo">${t('pickPhoto')}</label>
           <input type="file" id="f-photo" accept="image/*">
           <img class="thumb" id="f-photo-thumb">
-          <button class="btn ghost small" id="f-photo-clear" style="display:none;">Kaldır</button>
+          <button class="btn ghost small" id="f-photo-clear" style="display:none;">${t('removePhoto')}</button>
         </div>
       </div>
       <div class="form-actions">
-        <button class="btn ghost small" id="cancelAdd">Vazgeç</button>
-        <button class="btn primary small" id="confirmAdd">Ekle</button>
+        <button class="btn ghost small" id="cancelAdd">${t('cancel')}</button>
+        <button class="btn primary small" id="confirmAdd">${t('add')}</button>
       </div>
     </div>
   `;
@@ -1595,8 +2051,8 @@ function renderDayPanel(){
       const a = day.activities.find(x=>x.id===id);
       if(!a) return;
       editingId = id;
-      document.getElementById('addFormHead').textContent = 'Aktiviteyi Düzenle';
-      document.getElementById('confirmAdd').textContent = 'Kaydet';
+      document.getElementById('addFormHead').textContent = t('editActivity');
+      document.getElementById('confirmAdd').textContent = t('save');
       document.getElementById('f-time').value = a.time;
       document.getElementById('f-title').value = a.title;
       document.getElementById('f-cat').value = a.cat;
@@ -1658,8 +2114,8 @@ let pendingPhoto = null;
 let editingId = null;
 
 function resetForm(){
-  document.getElementById('addFormHead').textContent = 'Yeni Aktivite';
-  document.getElementById('confirmAdd').textContent = 'Ekle';
+  document.getElementById('addFormHead').textContent = t('newActivity');
+  document.getElementById('confirmAdd').textContent = t('add');
   document.getElementById('f-time').value = '10:00';
   document.getElementById('f-title').value = '';
   document.getElementById('f-cat').value = 'gezi';
@@ -1704,7 +2160,7 @@ document.getElementById('lightbox').addEventListener('click', ()=>{
 
 function renderStats(){
   const total = state.days.reduce((s,d)=>s+d.activities.length,0);
-  document.getElementById('statLine').textContent = `${state.days.length} gün · ${total} aktivite planlandı`;
+  document.getElementById('statLine').textContent = t('statLine')(state.days.length, total);
 }
 
 function escapeHtml(str){
@@ -1720,6 +2176,7 @@ document.getElementById('buildBtn').addEventListener('click', ()=>{
   state.days = buildDays(start, count, state.days);
   if(activeDay >= state.days.length) activeDay = 0;
   renderAll();
+  saveStore();
 });
 
 document.getElementById('printBtn').addEventListener('click', ()=>{
@@ -1735,7 +2192,7 @@ document.getElementById('printBtn').addEventListener('click', ()=>{
 
   let html = `
     <div>
-      <h1>${escapeHtml(cityTitle)} Planı</h1>
+      <h1>${escapeHtml(cityTitle)} ${t('printTitleSuffix')}</h1>
       <h3>${escapeHtml(subtitle)}</h3>
     </div>
   `;
@@ -1745,13 +2202,13 @@ document.getElementById('printBtn').addEventListener('click', ()=>{
     const sorted = [...day.activities].sort((a,b)=> a.time.localeCompare(b.time));
 
     html += `<div class="print-day">
-               <h2>${toRoman(i+1)}. Gün — ${fmtDate(d)}</h2>`;
+               <h2>${t('dayHead')(toRoman(i+1), fmtDate(d))}</h2>`;
 
     if(sorted.length === 0){
-       html += `<p class="print-empty">Bu gün için planlanmış aktivite yok.</p>`;
+       html += `<p class="print-empty">${t('printEmpty')}</p>`;
     } else {
        sorted.forEach(a => {
-         const catLabel = CATS[a.cat]?.label || '';
+         const catLbl = catLabel(a.cat);
          html += `
            <div class="print-item">
              <div>
@@ -1759,7 +2216,7 @@ document.getElementById('printBtn').addEventListener('click', ()=>{
                <span class="print-title">${escapeHtml(a.title)}</span>
              </div>
              <div class="print-meta">
-               ${catLabel} ${a.place ? `&nbsp;·&nbsp; ${escapeHtml(a.place)}` : ''}
+               ${catLbl} ${a.place ? `&nbsp;·&nbsp; ${escapeHtml(a.place)}` : ''}
              </div>
              ${a.note ? `<div class="print-note">${escapeHtml(a.note)}</div>` : ''}
            </div>
@@ -1779,7 +2236,7 @@ document.getElementById('exportBtn').addEventListener('click', ()=>{
   const blob = new Blob([data], {type:'application/json'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
-  a.href = url; a.download = `${state.destination}-gezi-plani.json`;
+  a.href = url; a.download = `${state.destination}-${t('fileSuffixJson')}.json`;
   a.click();
   URL.revokeObjectURL(url);
 });
@@ -1808,7 +2265,7 @@ document.getElementById('fileInput').addEventListener('change', (e)=>{
         document.getElementById('dayCount').value = state.days.length;
         renderAll();
       }
-    }catch(err){ alert('Dosya okunamadı: geçerli bir plan dosyası seçtiğinizden emin olun.'); }
+    }catch(err){ alert(t('importError')); }
   };
   reader.readAsText(file);
   e.target.value = '';
@@ -1847,6 +2304,8 @@ document.querySelectorAll('.subnav button').forEach(btn=>{
       loadWeather();
       initOrUpdateMap();
     }
+    if(btn.dataset.tab === 'archive') renderArchive();
+    if(btn.dataset.tab === 'journal') renderJournal();
   });
 });
 
@@ -1855,20 +2314,20 @@ function renderFlights(){
   const list = document.getElementById('flightsList');
   if(!list) return;
   if(!state.flights.length){
-    list.innerHTML = '<p class="empty-note">Henüz uçuş eklenmedi.</p>';
+    list.innerHTML = `<p class="empty-note">${t('emptyFlights')}</p>`;
     return;
   }
   list.innerHTML = state.flights.map(f=>`
     <div class="doc-card">
       <div>
-        <h4>${escapeHtml(f.airline||'Uçuş')} ${f.no ? '· '+escapeHtml(f.no) : ''}</h4>
+        <h4>${escapeHtml(f.airline||t('hdrFlights'))} ${f.no ? '· '+escapeHtml(f.no) : ''}</h4>
         <div class="doc-meta">
           <b>${f.date||''}</b> · ${f.dep||'--:--'} → ${f.arr||'--:--'}<br>
           ${escapeHtml(f.from||'')} → ${escapeHtml(f.to||'')} ${f.gate ? '· '+escapeHtml(f.gate) : ''}<br>
-          ${f.baggage ? 'Bagaj: '+escapeHtml(f.baggage)+' · ' : ''}${f.conf ? 'Kod: '+escapeHtml(f.conf) : ''}
+          ${f.baggage ? t('pdfBagLabel')+': '+escapeHtml(f.baggage)+' · ' : ''}${f.conf ? t('pdfCodeLabel')+': '+escapeHtml(f.conf) : ''}
         </div>
       </div>
-      <button class="icon-btn del" data-del-flight="${f.id}" title="Sil">
+      <button class="icon-btn del" data-del-flight="${f.id}" title="${t('delTitle')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
       </button>
     </div>`).join('');
@@ -1911,24 +2370,24 @@ document.getElementById('flightConfirm').addEventListener('click', ()=>{
 });
 
 /* ---------------- RESERVATIONS ---------------- */
-const RES_LABELS = {Hotel:'Otel', Airbnb:'Airbnb', Booking:'Booking', Restaurant:'Restoran', Train:'Tren', Museum:'Müze Bileti'};
 function renderReservations(){
   const list = document.getElementById('reservationsList');
   if(!list) return;
   if(!state.reservations.length){
-    list.innerHTML = '<p class="empty-note">Henüz rezervasyon eklenmedi.</p>';
+    list.innerHTML = `<p class="empty-note">${t('emptyRes')}</p>`;
     return;
   }
+  const RES_LABELS = I18N[APP_LANG].resTypes;
   list.innerHTML = state.reservations.map(r=>`
     <div class="doc-card">
       <div>
-        <h4>${escapeHtml(r.name||'Rezervasyon')} <span style="color:var(--gold);font-size:11px;">· ${RES_LABELS[r.type]||r.type}</span></h4>
+        <h4>${escapeHtml(r.name||t('hdrRes'))} <span style="color:var(--gold);font-size:11px;">· ${RES_LABELS[r.type]||r.type}</span></h4>
         <div class="doc-meta">
-          ${r.date ? '<b>'+r.date+'</b> · ' : ''}${r.conf ? 'Kod: '+escapeHtml(r.conf) : ''}<br>
+          ${r.date ? '<b>'+r.date+'</b> · ' : ''}${r.conf ? t('pdfCodeLabel')+': '+escapeHtml(r.conf) : ''}<br>
           ${r.link ? escapeHtml(r.link)+'<br>' : ''}${escapeHtml(r.note||'')}
         </div>
       </div>
-      <button class="icon-btn del" data-del-res="${r.id}" title="Sil">
+      <button class="icon-btn del" data-del-res="${r.id}" title="${t('delTitle')}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>
       </button>
     </div>`).join('');
@@ -1974,7 +2433,7 @@ document.getElementById('tripNotes').addEventListener('input', ()=>{
 /* ---------------- AI GEZI PLANI ---------------- */
 document.getElementById('aiPlanBtn').addEventListener('click', ()=>{
   const dest = DESTINATIONS[state.destination];
-  document.getElementById('aiModalHint').textContent = `Şu an ${dest.city} için ${state.days.length} günlük bir plan oluşturulacak. Mevcut aktivitelerin üzerine yazılacak.`;
+  document.getElementById('aiModalHint').textContent = t('aiHint')(dest.city, state.days.length);
   document.getElementById('aiStatus').textContent = '';
   document.getElementById('aiStatus').className = 'ai-status';
   document.getElementById('aiModalOverlay').classList.add('open');
@@ -1987,19 +2446,23 @@ async function generateAIPlan(){
   const statusEl = document.getElementById('aiStatus');
   const btn = document.getElementById('aiGenerateBtn');
   const dest = DESTINATIONS[state.destination];
-  const budget = document.getElementById('ai-budget').value || 'belirtilmedi';
+  const budget = document.getElementById('ai-budget').value || (APP_LANG==='en' ? 'unspecified' : 'belirtilmedi');
   const type = document.getElementById('ai-type').value;
-  const interests = document.getElementById('ai-interests').value || 'genel gezi';
-  const food = document.getElementById('ai-food').value || 'belirtilmedi';
+  const interests = document.getElementById('ai-interests').value || (APP_LANG==='en' ? 'general sightseeing' : 'genel gezi');
+  const food = document.getElementById('ai-food').value || (APP_LANG==='en' ? 'unspecified' : 'belirtilmedi');
   const walk = document.getElementById('ai-walk').value;
   const dayCount = state.days.length;
 
   statusEl.className = 'ai-status';
-  statusEl.textContent = 'AI rota hazırlıyor...';
+  statusEl.textContent = t('aiPreparing');
   btn.disabled = true;
 
-  const sys = "Sen bir seyahat planlama asistanısın. SADECE geçerli JSON döndür, markdown code fence kullanma, hiçbir açıklama ekleme. Şema: {\"days\":[[{\"time\":\"HH:MM\",\"title\":\"kısa başlık\",\"cat\":\"muze|yemek|gezi|manzara|ulasim\",\"place\":\"konum adı\",\"note\":\"12 kelimeyi geçmeyen kısa not\"}]]}. Tam olarak " + dayCount + " gün dizisi olsun, her günde 3-4 aktivite olsun, saatler mantıklı sırayla artsın, her şey Türkçe olsun.";
-  const usr = `Şehir: ${dest.city}, ${dest.country}. Gün sayısı: ${dayCount}. Seyahat tipi: ${type}. Günlük bütçe: ${budget} €. İlgi alanları: ${interests}. Yemek tercihi: ${food}. Günlük yürüme sınırı: ${walk}.`;
+  const sys = APP_LANG==='en'
+    ? "You are a travel planning assistant. Return ONLY valid JSON, no markdown code fences, no explanation. Schema: {\"days\":[[{\"time\":\"HH:MM\",\"title\":\"short title\",\"cat\":\"muze|yemek|gezi|manzara|ulasim\",\"place\":\"place name\",\"note\":\"short note, max 12 words\"}]]}. Provide exactly " + dayCount + " day arrays, 3-4 activities per day, times in logical order, everything in English."
+    : "Sen bir seyahat planlama asistanısın. SADECE geçerli JSON döndür, markdown code fence kullanma, hiçbir açıklama ekleme. Şema: {\"days\":[[{\"time\":\"HH:MM\",\"title\":\"kısa başlık\",\"cat\":\"muze|yemek|gezi|manzara|ulasim\",\"place\":\"konum adı\",\"note\":\"12 kelimeyi geçmeyen kısa not\"}]]}. Tam olarak " + dayCount + " gün dizisi olsun, her günde 3-4 aktivite olsun, saatler mantıklı sırayla artsın, her şey Türkçe olsun.";
+  const usr = APP_LANG==='en'
+    ? `City: ${dest.city}, ${dest.country}. Number of days: ${dayCount}. Trip type: ${type}. Daily budget: ${budget} €. Interests: ${interests}. Food preference: ${food}. Daily walking limit: ${walk}.`
+    : `Şehir: ${dest.city}, ${dest.country}. Gün sayısı: ${dayCount}. Seyahat tipi: ${type}. Günlük bütçe: ${budget} €. İlgi alanları: ${interests}. Yemek tercihi: ${food}. Günlük yürüme sınırı: ${walk}.`;
 
   try{
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -2016,14 +2479,14 @@ async function generateAIPlan(){
     const text = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n');
     const clean = text.replace(/```json|```/g,'').trim();
     const parsed = JSON.parse(clean);
-    if(!parsed.days || !Array.isArray(parsed.days)) throw new Error('Beklenmeyen format');
+    if(!parsed.days || !Array.isArray(parsed.days)) throw new Error(APP_LANG==='en' ? 'Unexpected format' : 'Beklenmeyen format');
 
     parsed.days.forEach((acts, i)=>{
       if(!state.days[i]) return;
       state.days[i].activities = acts.map(a=>({
         id: uid(),
         time: a.time || '10:00',
-        title: a.title || 'Aktivite',
+        title: a.title || (APP_LANG==='en' ? 'Activity' : 'Aktivite'),
         cat: CATS[a.cat] ? a.cat : 'gezi',
         place: a.place || '',
         note: a.note || '',
@@ -2031,16 +2494,193 @@ async function generateAIPlan(){
       }));
     });
 
-    statusEl.textContent = 'Plan hazır! Aktiviteler güncellendi.';
+    statusEl.textContent = t('aiReady');
     renderAll();
     setTimeout(()=>{ document.getElementById('aiModalOverlay').classList.remove('open'); }, 700);
   }catch(err){
     statusEl.className = 'ai-status error';
-    statusEl.textContent = 'Bir şeyler ters gitti, tekrar dener misin? (' + err.message + ')';
+    statusEl.textContent = t('aiError')(err.message);
   }
   btn.disabled = false;
 }
 document.getElementById('aiGenerateBtn').addEventListener('click', generateAIPlan);
+
+/* ---------------- ARCHIVE (past plans) ---------------- */
+function renderArchive(){
+  const grid = document.getElementById('archiveGrid');
+  if(!grid) return;
+  const store = loadStore();
+  const ids = Object.keys(store.trips||{});
+  if(!ids.length){
+    grid.innerHTML = `<p class="empty-note">${t('noTrips')}</p>`;
+    return;
+  }
+  grid.innerHTML = ids.map(id=>{
+    const dest = DESTINATIONS[id];
+    if(!dest) return '';
+    const trip = store.trips[id];
+    const days = trip.days || [];
+    const total = days.reduce((s,d)=>s+(d.activities?d.activities.length:0),0);
+    const range = days.length ? `${fmtDate(new Date(days[0].date+'T00:00:00'))} – ${fmtDate(new Date(days[days.length-1].date+'T00:00:00'))}` : '';
+    const isCurrent = id === state.destination;
+    return `
+    <div class="archive-card ${isCurrent?'current':''}">
+      ${isCurrent ? `<span class="ac-badge">${t('currentTrip')}</span>` : ''}
+      <div class="ac-eyebrow">${escapeHtml(dest.eyebrowCountry||dest.country)}</div>
+      <h4>${escapeHtml(dest.city)}</h4>
+      <div class="ac-meta">${escapeHtml(trip.subtitle||'')}<br>${days.length} ${APP_LANG==='en'?'days':'gün'} · ${total} ${APP_LANG==='en'?'activities':'aktivite'}${range?'<br>'+range:''}</div>
+      <div class="ac-actions">
+        <button class="btn primary small" data-open-trip="${id}">${t('openTrip')}</button>
+        ${!isCurrent ? `<button class="btn ghost small" data-del-trip="${id}">${t('deleteTrip')}</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('[data-open-trip]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const id = b.getAttribute('data-open-trip');
+      saveStore();
+      applyDestination(id);
+      document.querySelectorAll('.subnav button').forEach(bb=>bb.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+      document.getElementById('tabBtn-plan').classList.add('active');
+      document.getElementById('tab-plan').classList.add('active');
+    });
+  });
+  grid.querySelectorAll('[data-del-trip]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const id = b.getAttribute('data-del-trip');
+      const s = loadStore();
+      delete s.trips[id];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(s));
+      renderArchive();
+    });
+  });
+}
+
+/* ---------------- SEYAHATNAME (travel journal) ---------------- */
+const JOURNAL_KEY = 'itinerarium-journal';
+function loadJournal(){
+  try{
+    const raw = localStorage.getItem(JOURNAL_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+function saveJournal(entries){
+  try{ localStorage.setItem(JOURNAL_KEY, JSON.stringify(entries)); }catch(e){}
+}
+let journalPendingPhoto = null;
+let journalPendingRating = 0;
+
+function renderJournal(){
+  const grid = document.getElementById('journalGrid');
+  if(!grid) return;
+  const entries = loadJournal().sort((a,b)=> (b.date||'').localeCompare(a.date||'') || b.createdAt-a.createdAt);
+  if(!entries.length){
+    grid.innerHTML = `<p class="empty-note">${t('noJournal')}</p>`;
+    return;
+  }
+  grid.innerHTML = entries.map(e=>`
+    <div class="journal-card" data-journal-id="${e.id}">
+      ${e.photo
+        ? `<img class="journal-poster" src="${e.photo}" alt="${escapeHtml(e.place)}">`
+        : `<div class="journal-poster no-photo">${escapeHtml(e.place)}</div>`}
+      <div class="jc-title">${escapeHtml(e.place)}</div>
+      <div class="journal-stars">${'★'.repeat(e.rating||0)}${'☆'.repeat(5-(e.rating||0))}</div>
+      <div class="jc-meta">${e.date||''}</div>
+    </div>`).join('');
+  grid.querySelectorAll('[data-journal-id]').forEach(card=>{
+    card.addEventListener('click', ()=> openJournalDetail(card.getAttribute('data-journal-id')));
+  });
+}
+
+function openJournalDetail(id){
+  const entries = loadJournal();
+  const e = entries.find(x=>x.id===id);
+  if(!e) return;
+  const body = document.getElementById('journalDetailBody');
+  body.innerHTML = `
+    ${e.photo ? `<img src="${e.photo}" alt="${escapeHtml(e.place)}">` : ''}
+    <h3 class="jd-place">${escapeHtml(e.place)}</h3>
+    <div class="jd-meta">${e.date||''} · <span class="journal-stars">${'★'.repeat(e.rating||0)}${'☆'.repeat(5-(e.rating||0))}</span></div>
+    <div class="jd-review">${escapeHtml(e.review||'')}</div>
+    <div class="form-actions">
+      <button class="btn ghost small" id="journalDetailClose">${t('cancel')}</button>
+      <button class="btn ghost small" id="journalDetailDelete">${t('deleteTitle')}</button>
+    </div>
+  `;
+  document.getElementById('journalDetailOverlay').classList.add('open');
+  document.getElementById('journalDetailClose').addEventListener('click', ()=>{
+    document.getElementById('journalDetailOverlay').classList.remove('open');
+  });
+  document.getElementById('journalDetailDelete').addEventListener('click', ()=>{
+    const remaining = loadJournal().filter(x=>x.id!==id);
+    saveJournal(remaining);
+    document.getElementById('journalDetailOverlay').classList.remove('open');
+    renderJournal();
+  });
+}
+
+document.getElementById('journalAddToggle').addEventListener('click', ()=>{
+  journalPendingPhoto = null;
+  journalPendingRating = 0;
+  document.getElementById('j-place').value = '';
+  document.getElementById('j-date').value = toDateStr(new Date());
+  document.getElementById('j-review').value = '';
+  document.getElementById('j-photo').value = '';
+  document.getElementById('j-photo-thumb').style.display = 'none';
+  document.getElementById('j-photo-clear').style.display = 'none';
+  document.querySelectorAll('#jStarPicker span').forEach(s=>s.classList.remove('filled'));
+  document.getElementById('journalAddForm').classList.add('open');
+});
+document.getElementById('journalCancel').addEventListener('click', ()=>{
+  document.getElementById('journalAddForm').classList.remove('open');
+});
+document.getElementById('journalConfirm').addEventListener('click', ()=>{
+  const place = document.getElementById('j-place').value.trim();
+  if(!place){ document.getElementById('j-place').focus(); return; }
+  const entry = {
+    id: uid(),
+    place,
+    date: document.getElementById('j-date').value || toDateStr(new Date()),
+    rating: journalPendingRating,
+    review: document.getElementById('j-review').value.trim(),
+    photo: journalPendingPhoto,
+    createdAt: Date.now()
+  };
+  const entries = loadJournal();
+  entries.push(entry);
+  saveJournal(entries);
+  document.getElementById('journalAddForm').classList.remove('open');
+  renderJournal();
+});
+document.querySelectorAll('#jStarPicker span').forEach(starEl=>{
+  starEl.addEventListener('click', ()=>{
+    journalPendingRating = parseInt(starEl.getAttribute('data-star'), 10);
+    document.querySelectorAll('#jStarPicker span').forEach(s=>{
+      s.classList.toggle('filled', parseInt(s.getAttribute('data-star'),10) <= journalPendingRating);
+    });
+  });
+});
+document.getElementById('j-photo').addEventListener('change', (e)=>{
+  const file = e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev)=>{
+    journalPendingPhoto = ev.target.result;
+    const thumb = document.getElementById('j-photo-thumb');
+    thumb.src = journalPendingPhoto;
+    thumb.style.display = 'block';
+    document.getElementById('j-photo-clear').style.display = 'inline-block';
+  };
+  reader.readAsDataURL(file);
+});
+document.getElementById('j-photo-clear').addEventListener('click', ()=>{
+  journalPendingPhoto = null;
+  document.getElementById('j-photo').value = '';
+  document.getElementById('j-photo-thumb').style.display = 'none';
+  document.getElementById('j-photo-clear').style.display = 'none';
+});
 
 /* ---------------- CURRENCY ---------------- */
 document.getElementById('curConvertBtn').addEventListener('click', async ()=>{
@@ -2048,7 +2688,7 @@ document.getElementById('curConvertBtn').addEventListener('click', async ()=>{
   const from = document.getElementById('cur-from').value;
   const to = document.getElementById('cur-to').value;
   const resultEl = document.getElementById('curResult');
-  resultEl.textContent = 'Hesaplanıyor...';
+  resultEl.textContent = t('calculating');
   try{
     if(from === to){
       resultEl.textContent = `${amount} ${from} = ${amount} ${to}`;
@@ -2059,7 +2699,7 @@ document.getElementById('curConvertBtn').addEventListener('click', async ()=>{
     const val = data.rates[to];
     resultEl.textContent = `${amount} ${from} = ${val.toFixed(2)} ${to}`;
   }catch(e){
-    resultEl.textContent = 'Kur alınamadı, bağlantını kontrol et.';
+    resultEl.textContent = t('rateError');
   }
 });
 
@@ -2077,29 +2717,29 @@ async function loadWeather(){
   const row = document.getElementById('weatherRow');
   const note = document.getElementById('weatherNote');
   const geo = CITY_GEO[state.destination];
-  if(!geo || !state.days.length){ row.innerHTML = '<p class="empty-note">Konum bulunamadı.</p>'; return; }
-  row.innerHTML = '<p class="empty-note">Yükleniyor...</p>';
+  if(!geo || !state.days.length){ row.innerHTML = `<p class="empty-note">${t('weatherNotFound')}</p>`; return; }
+  row.innerHTML = `<p class="empty-note">${t('weatherLoading')}</p>`;
   const start = state.days[0].date;
   const end = state.days[state.days.length-1].date;
   try{
     const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${geo.lat}&longitude=${geo.lon}&daily=temperature_2m_max,temperature_2m_min,weathercode&timezone=auto&start_date=${start}&end_date=${end}`);
     const data = await res.json();
     if(!data.daily || !data.daily.time.length){
-      row.innerHTML = '<p class="empty-note">Bu tarihler için tahmin henüz yok (çok uzak bir tarih olabilir).</p>';
+      row.innerHTML = `<p class="empty-note">${t('weatherNoData')}</p>`;
       note.textContent = '';
       return;
     }
-    row.innerHTML = data.daily.time.map((t,i)=>{
-      const d = new Date(t+'T00:00:00');
+    row.innerHTML = data.daily.time.map((t2,i)=>{
+      const d = new Date(t2+'T00:00:00');
       return `<div class="weather-day">
         <div class="wd-date">${fmtDate(d)}</div>
         <div class="wd-ico">${weatherIcon(data.daily.weathercode[i])}</div>
         <div class="wd-temp">${Math.round(data.daily.temperature_2m_min[i])}° / ${Math.round(data.daily.temperature_2m_max[i])}°</div>
       </div>`;
     }).join('');
-    note.textContent = 'Open-Meteo üzerinden ücretsiz tahmin verisi.';
+    note.textContent = t('weatherNote');
   }catch(e){
-    row.innerHTML = '<p class="empty-note">Hava durumu alınamadı.</p>';
+    row.innerHTML = `<p class="empty-note">${t('weatherError')}</p>`;
   }
 }
 
@@ -2162,12 +2802,12 @@ async function generatePremiumPDF(){
     doc.text(`${state.days[0].date} — ${state.days[state.days.length-1].date}`, pageW/2, 112, {align:'center'});
   }
   try{
-    const qr = await qrDataUrl(`Itinerarium: ${dest.city} gezi planı — ${state.subtitle||''}`);
+    const qr = await qrDataUrl(`Itinerarium: ${dest.city} ${t('printTitleSuffix')} — ${state.subtitle||''}`);
     if(qr) doc.addImage(qr, 'PNG', pageW/2-20, 130, 40, 40);
   }catch(e){}
   doc.setFontSize(9);
   doc.setTextColor(140,130,110);
-  doc.text('Itinerarium AI ile oluşturuldu', pageW/2, 280, {align:'center'});
+  doc.text(t('pdfFooter'), pageW/2, 280, {align:'center'});
 
   // Day pages
   state.days.forEach((day, idx)=>{
@@ -2178,7 +2818,7 @@ async function generatePremiumPDF(){
     doc.setTextColor(30,25,20);
     doc.setFont('times','italic');
     doc.setFontSize(20);
-    doc.text(`${toRoman(idx+1)}. Gün — ${fmtDate(d)}`, 15, 22);
+    doc.text(t('dayHead')(toRoman(idx+1), fmtDate(d)), 15, 22);
     doc.setDrawColor(200,190,170);
     doc.line(15, 26, pageW-15, 26);
     let y = 38;
@@ -2187,7 +2827,7 @@ async function generatePremiumPDF(){
       doc.setFont('helvetica','italic');
       doc.setFontSize(11);
       doc.setTextColor(120,110,95);
-      doc.text('Bu gün için planlanmış bir şey yok.', 15, y);
+      doc.text(t('pdfEmptyDay'), 15, y);
     }
     sorted.forEach(a=>{
       doc.setFont('courier','normal');
@@ -2225,12 +2865,12 @@ async function generatePremiumPDF(){
     doc.setTextColor(30,25,20);
     doc.setFont('times','italic');
     doc.setFontSize(20);
-    doc.text('Uçuşlar & Rezervasyonlar', 15, 22);
+    doc.text(t('pdfFlightsRes'), 15, 22);
     doc.line(15, 26, pageW-15, 26);
     let y = 38;
     doc.setFont('helvetica','bold'); doc.setFontSize(12);
     if(state.flights.length){
-      doc.text('Uçuşlar', 15, y); y+=8;
+      doc.text(t('pdfFlights'), 15, y); y+=8;
       state.flights.forEach(f=>{
         doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(60,55,45);
         doc.text(`${f.airline} ${f.no||''} · ${f.date||''} · ${f.dep||''} → ${f.arr||''} · ${f.from||''} → ${f.to||''}`, 15, y);
@@ -2240,8 +2880,9 @@ async function generatePremiumPDF(){
       y += 6;
     }
     if(state.reservations.length){
+      const RES_LABELS = I18N[APP_LANG].resTypes;
       doc.setFont('helvetica','bold'); doc.setFontSize(12); doc.setTextColor(30,25,20);
-      doc.text('Rezervasyonlar', 15, y); y+=8;
+      doc.text(t('pdfReservations'), 15, y); y+=8;
       state.reservations.forEach(r=>{
         doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(60,55,45);
         doc.text(`${RES_LABELS[r.type]||r.type}: ${r.name} · ${r.date||''} · ${r.conf||''}`, 15, y);
@@ -2255,18 +2896,18 @@ async function generatePremiumPDF(){
   if(state.notes){
     doc.addPage();
     doc.setFont('times','italic'); doc.setFontSize(20); doc.setTextColor(30,25,20);
-    doc.text('Notlar', 15, 22);
+    doc.text(t('pdfNotes'), 15, 22);
     doc.line(15, 26, pageW-15, 26);
     doc.setFont('helvetica','normal'); doc.setFontSize(11); doc.setTextColor(60,55,45);
     const lines = doc.splitTextToSize(state.notes, pageW-30);
     doc.text(lines, 15, 40);
   }
 
-  doc.save(`${dest.city}-seyahat-plani.pdf`);
+  doc.save(`${dest.city}-${t('fileSuffixPdf')}.pdf`);
 }
 document.getElementById('pdfBtn').addEventListener('click', ()=>{
-  document.getElementById('pdfBtn').textContent = 'Hazırlanıyor...';
-  generatePremiumPDF().finally(()=>{ document.getElementById('pdfBtn').textContent = '📄 Şık PDF'; });
+  document.getElementById('pdfBtn').textContent = t('pdfPreparing');
+  generatePremiumPDF().finally(()=>{ document.getElementById('pdfBtn').textContent = t('pdfBtn'); });
 });
 
 
