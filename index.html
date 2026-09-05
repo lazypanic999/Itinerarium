@@ -1106,6 +1106,7 @@
   <div class="modal">
     <h3 id="aiModalTitle">AI ile Gezi Planı</h3>
     <p class="modal-hint" id="aiModalHint">Şu an seçili şehir ve gün sayısı için bir plan oluşturulacak. Mevcut aktivitelerin üzerine yazılacak.</p>
+    <div class="field"><label for="ai-start-location">Başlangıç konumu</label><input type="text" id="ai-start-location" placeholder="ör. oteliniz veya havalimanı"></div>
     <div class="field"><label id="lbl-budget">Günlük bütçe (yaklaşık, €)</label><input type="number" id="ai-budget" placeholder="ör. 120"></div>
     <div class="field"><label id="lbl-triptype">Seyahat tipi</label>
       <select id="ai-type">
@@ -1121,6 +1122,9 @@
     <div class="field"><label id="lbl-walk">Günlük yürüme sınırı</label>
       <select id="ai-walk"><option value="düşük">Düşük</option><option value="orta" selected>Orta</option><option value="yüksek">Yüksek</option></select>
     </div>
+    <div class="field"><label for="ai-pace">Gezi temposu</label>
+      <select id="ai-pace"><option value="slow">Sakin</option><option value="medium" selected>Dengeli</option><option value="fast">Yoğun</option></select>
+    </div>
     <div class="form-actions">
       <button class="btn ghost small" id="aiCancelBtn">Vazgeç</button>
       <button class="btn primary small" id="aiGenerateBtn">Planı Oluştur</button>
@@ -1134,6 +1138,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="runtime-config.js"></script>
 
 <script>
 /* ---------------- THEME & LANGUAGE ---------------- */
@@ -2446,49 +2451,45 @@ async function generateAIPlan(){
   const statusEl = document.getElementById('aiStatus');
   const btn = document.getElementById('aiGenerateBtn');
   const dest = DESTINATIONS[state.destination];
-  const budget = document.getElementById('ai-budget').value || (APP_LANG==='en' ? 'unspecified' : 'belirtilmedi');
-  const type = document.getElementById('ai-type').value;
-  const interests = document.getElementById('ai-interests').value || (APP_LANG==='en' ? 'general sightseeing' : 'genel gezi');
-  const food = document.getElementById('ai-food').value || (APP_LANG==='en' ? 'unspecified' : 'belirtilmedi');
-  const walk = document.getElementById('ai-walk').value;
-  const dayCount = state.days.length;
 
   statusEl.className = 'ai-status';
   statusEl.textContent = t('aiPreparing');
   btn.disabled = true;
 
-  const sys = APP_LANG==='en'
-    ? "You are a travel planning assistant. Return ONLY valid JSON, no markdown code fences, no explanation. Schema: {\"days\":[[{\"time\":\"HH:MM\",\"title\":\"short title\",\"cat\":\"muze|yemek|gezi|manzara|ulasim\",\"place\":\"place name\",\"note\":\"short note, max 12 words\"}]]}. Provide exactly " + dayCount + " day arrays, 3-4 activities per day, times in logical order, everything in English."
-    : "Sen bir seyahat planlama asistanısın. SADECE geçerli JSON döndür, markdown code fence kullanma, hiçbir açıklama ekleme. Şema: {\"days\":[[{\"time\":\"HH:MM\",\"title\":\"kısa başlık\",\"cat\":\"muze|yemek|gezi|manzara|ulasim\",\"place\":\"konum adı\",\"note\":\"12 kelimeyi geçmeyen kısa not\"}]]}. Tam olarak " + dayCount + " gün dizisi olsun, her günde 3-4 aktivite olsun, saatler mantıklı sırayla artsın, her şey Türkçe olsun.";
-  const usr = APP_LANG==='en'
-    ? `City: ${dest.city}, ${dest.country}. Number of days: ${dayCount}. Trip type: ${type}. Daily budget: ${budget} €. Interests: ${interests}. Food preference: ${food}. Daily walking limit: ${walk}.`
-    : `Şehir: ${dest.city}, ${dest.country}. Gün sayısı: ${dayCount}. Seyahat tipi: ${type}. Günlük bütçe: ${budget} €. İlgi alanları: ${interests}. Yemek tercihi: ${food}. Günlük yürüme sınırı: ${walk}.`;
-
   try{
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
+    const apiBaseUrl = (window.ITINERARIUM_API_URL || '').replace(/\/$/, '');
+    const response = await fetch(`${apiBaseUrl}/api/ai-itinerary`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 1000,
-        system: sys,
-        messages: [{ role: "user", content: usr }]
+        destination: `${dest.city}, ${dest.country}`,
+        startDate: document.getElementById('startDate').value,
+        dayCount: state.days.length,
+        budget: document.getElementById('ai-budget').value,
+        tripType: document.getElementById('ai-type').value,
+        interests: document.getElementById('ai-interests').value,
+        food: document.getElementById('ai-food').value,
+        walkingLimit: document.getElementById('ai-walk').value,
+        pace: document.getElementById('ai-pace').value,
+        startLocation: document.getElementById('ai-start-location').value,
+        language: APP_LANG
       })
     });
+    if(!response.ok){
+      const error = await response.json().catch(()=>({}));
+      throw new Error(error.error || (APP_LANG==='en' ? 'Could not create the itinerary.' : 'Rota oluşturulamadı.'));
+    }
     const data = await response.json();
-    const text = (data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('\n');
-    const clean = text.replace(/```json|```/g,'').trim();
-    const parsed = JSON.parse(clean);
-    if(!parsed.days || !Array.isArray(parsed.days)) throw new Error(APP_LANG==='en' ? 'Unexpected format' : 'Beklenmeyen format');
+    if(!Array.isArray(data.days)) throw new Error(APP_LANG==='en' ? 'Unexpected format' : 'Beklenmeyen format');
 
-    parsed.days.forEach((acts, i)=>{
+    data.days.forEach((day, i)=>{
       if(!state.days[i]) return;
-      state.days[i].activities = acts.map(a=>({
+      state.days[i].activities = day.activities.map(a=>({
         id: uid(),
         time: a.time || '10:00',
         title: a.title || (APP_LANG==='en' ? 'Activity' : 'Aktivite'),
-        cat: CATS[a.cat] ? a.cat : 'gezi',
-        place: a.place || '',
+        cat: CATS[a.category] ? a.category : 'gezi',
+        place: a.place?.name || '',
         note: a.note || '',
         photo: null
       }));

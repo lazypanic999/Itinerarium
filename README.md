@@ -2,13 +2,11 @@
 
 <img src="assets/logo.png" width="170">
 
-# 🏛️ Itinerarium
+# Itinerarium
 
-### AI-Powered Premium Travel Planner
+### Travel planning for web and Android
 
-**Plan smarter. Travel better.**
-
-A modern travel planning application for **Web** and **Android**, designed to help travelers create personalized itineraries, organize trips, explore destinations, and access essential travel tools through a clean and elegant interface.
+Itinerarium is a travel planner for building day-by-day itineraries, keeping trip details together, and exploring a destination from one interface.
 
 ![Platform](https://img.shields.io/badge/Platform-Web%20%7C%20Android-black?style=for-the-badge)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
@@ -21,28 +19,24 @@ A modern travel planning application for **Web** and **Android**, designed to he
 
 ---
 
-# 📖 About
+# Overview
 
-**Itinerarium** is a modern travel planning application that enables travelers to organize every aspect of their journeys in one place.
-
-The application allows users to create day-by-day itineraries, manage activities, explore destinations through interactive maps, check weather forecasts, convert currencies, and keep previous travel plans organized.
-
-Built with modern web technologies and powered by **Capacitor**, Itinerarium runs as both a responsive web application and a native Android application from the same codebase.
+The app supports itinerary building, activity management, interactive maps, weather forecasts, currency conversion, trip archives, and travel notes. A shared HTML, CSS, and JavaScript codebase is packaged for Android with Capacitor.
 
 ---
 
-# ✨ Features
+# Features
 
-## 🗓 Smart Trip Planner
+## Trip Planner
 
 - Create personalized travel itineraries
-- Automatic day-by-day schedule generation
+- Build and update a day-by-day schedule
 - Organize activities for every travel day
 - Edit and manage travel plans easily
 
 ---
 
-## 🗺 Interactive Maps
+## Maps
 
 - Explore destinations using Leaflet maps
 - Visualize attractions and routes
@@ -50,7 +44,7 @@ Built with modern web technologies and powered by **Capacitor**, Itinerarium run
 
 ---
 
-## 🛠 Travel Tools
+## Travel Tools
 
 - Weather forecast
 - Currency converter
@@ -59,7 +53,7 @@ Built with modern web technologies and powered by **Capacitor**, Itinerarium run
 
 ---
 
-## 📚 Travel Management
+## Trip Management
 
 - Save previous itineraries
 - Organize trip history
@@ -67,7 +61,7 @@ Built with modern web technologies and powered by **Capacitor**, Itinerarium run
 
 ---
 
-## 📱 Cross Platform
+## Cross-Platform
 
 - Responsive Web Application
 - Native Android Application
@@ -75,7 +69,7 @@ Built with modern web technologies and powered by **Capacitor**, Itinerarium run
 
 ---
 
-## 🎨 Modern UI
+## Interface
 
 - Roman-inspired premium design
 - Elegant typography
@@ -85,10 +79,10 @@ Built with modern web technologies and powered by **Capacitor**, Itinerarium run
 
 ---
 
-# 📸 Application Preview
+# Screenshots
 
 
-## 🎬 Demo
+## Demo
 
 <p align="center">
 <img src="screenshots/demo.gif" width="900">
@@ -96,19 +90,19 @@ Built with modern web technologies and powered by **Capacitor**, Itinerarium run
 
 ---
 
-## 🏠 Home
+## Home
 
 <p align="center">
 <img src="screenshots/home.jpeg" width="900">
 </p>
 
 <p align="center">
-Elegant landing page introducing the application and AI-powered trip planning.
+The entry point for browsing destinations and starting a trip.
 </p>
 
 ---
 
-## 🗓 Trip Planner
+## Trip Planner
 
 <p align="center">
 <img src="screenshots/plan.jpeg" width="900">
@@ -120,7 +114,7 @@ Create personalized itineraries with an intuitive day-by-day planner.
 
 ---
 
-## 🛠 Travel Tools
+## Travel Tools
 
 <p align="center">
 <img src="screenshots/tool.jpeg" width="900">
@@ -132,7 +126,7 @@ Built-in weather forecast, currency converter and interactive maps.
 
 ---
 
-## 📚 Past Plans
+## Past Plans
 
 <p align="center">
 <img src="screenshots/pastplans.jpeg" width="900">
@@ -144,7 +138,7 @@ Access and manage previously created travel plans.
 
 ---
 
-## 📖 Travelogue
+## Travelogue
 
 <p align="center">
 <img src="screenshots/travelogue.jpeg" width="900">
@@ -156,7 +150,7 @@ Document memorable moments and keep your travel experiences organized.
 
 ---
 
-# 🛠 Tech Stack
+# Technology
 
 ## Frontend
 
@@ -173,6 +167,29 @@ Document memorable moments and keep your travel experiences organized.
 
 - Leaflet.js
 
+## AI-Assisted Route Planning
+
+The route generator uses a small Node.js service. The browser and Android client never receive the NVIDIA API key.
+
+```text
+Itinerarium UI → /api/ai-itinerary → verified place tools → NVIDIA NIM → validated itinerary JSON
+```
+
+Before requesting a plan, the service resolves the destination and gathers attraction, museum, viewpoint, café, and restaurant candidates from OpenStreetMap. The model prioritizes this verified set instead of inventing venues, coordinates, or routes. The server validates its output before returning the itinerary to the app.
+
+### Local setup
+
+1. Copy `.env.example` to `.env`.
+2. Set `NVIDIA_API_KEY` to your NVIDIA Build key. Do not commit or place it in `runtime-config.js`.
+3. Optionally set `NVIDIA_MODEL`. The default begins with `openai/gpt-oss-20b` at low reasoning effort, then tries the next entry if NVIDIA retires one with a `404` or `410` response.
+4. Run `npm start`, then open `http://localhost:3000`.
+
+Use **AI ile Oluştur** to provide starting location, daily budget, trip type, interests, food preferences, walking limit, and pace. The main planner supplies destination, start date, and duration.
+
+### Android / deployed backend
+
+Deploy the Node backend to a server that can reach NVIDIA NIM and OpenStreetMap. Put that public HTTPS backend address (without any secret) in `www/runtime-config.js` as `window.ITINERARIUM_API_URL`, then run `npx cap copy android` and build as usual. For web deployments, host the `www` files from the same Node server or set the same public URL in `runtime-config.js`.
+
 ## Version Control
 
 - Git
@@ -180,7 +197,7 @@ Document memorable moments and keep your travel experiences organized.
 
 ---
 
-# 🚀 Getting Started
+# Getting Started
 
 Clone the repository
 
@@ -214,7 +231,7 @@ npx cap open android
 
 ---
 
-# 📱 Build Android APK
+# Build the Android APK
 
 Copy the latest web assets
 
@@ -238,7 +255,7 @@ android/app/build/outputs/apk/debug/app-debug.apk
 
 ---
 
-# 💻 Project Highlights
+# Highlights
 
 - Responsive Web Application
 - Native Android Application
@@ -247,12 +264,12 @@ android/app/build/outputs/apk/debug/app-debug.apk
 - Weather Forecast Integration
 - Currency Converter
 - Travel Planner
-- Roman-inspired Premium UI
+- Roman-inspired visual style
 - Modern Responsive Design
 
 ---
 
-# 👨‍💻 Author
+# Author
 
 ## Doğukan Sağlık
 
@@ -271,8 +288,6 @@ https://www.linkedin.com/in/do%C4%9Fukan-sa%C4%9Fl%C4%B1k-4515a5288/
 
 <div align="center">
 
-### ⭐ If you like this project, consider giving it a Star!
-
-Made with ❤️ by **Doğukan Sağlık**
+Built by **Doğukan Sağlık**.
 
 </div>
